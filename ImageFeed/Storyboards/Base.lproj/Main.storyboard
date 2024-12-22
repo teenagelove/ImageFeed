@@ -53,18 +53,30 @@
                                                     <color key="textColor" name="YP White"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XTV-gG-Mdd" userLabel="Gradient View">
+                                                    <rect key="frame" x="16" y="292" width="361" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="30" id="sRF-Uf-TG6"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstItem="ua3-IO-t9x" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="KQQ-6F-axJ" secondAttribute="leading" constant="20" symbolic="YES" id="0Xb-s3-N18"/>
                                                 <constraint firstItem="d3C-Hr-HY9" firstAttribute="bottom" secondItem="L1t-iV-lSF" secondAttribute="bottom" constant="8" id="AKx-yG-D81"/>
                                                 <constraint firstItem="L1t-iV-lSF" firstAttribute="leading" secondItem="d3C-Hr-HY9" secondAttribute="leading" constant="8" id="FGA-q2-SNd"/>
+                                                <constraint firstItem="XTV-gG-Mdd" firstAttribute="leading" secondItem="d3C-Hr-HY9" secondAttribute="leading" id="IHb-v0-l8W"/>
                                                 <constraint firstItem="ua3-IO-t9x" firstAttribute="trailing" secondItem="d3C-Hr-HY9" secondAttribute="trailing" id="L9y-ho-oM9"/>
                                                 <constraint firstAttribute="trailing" secondItem="d3C-Hr-HY9" secondAttribute="trailing" constant="16" id="M4S-cc-exJ"/>
                                                 <constraint firstItem="L1t-iV-lSF" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="d3C-Hr-HY9" secondAttribute="trailing" constant="8" id="P2g-K1-q9Q"/>
+                                                <constraint firstItem="d3C-Hr-HY9" firstAttribute="trailing" secondItem="XTV-gG-Mdd" secondAttribute="trailing" id="Vg2-22-Qbd"/>
                                                 <constraint firstItem="ua3-IO-t9x" firstAttribute="top" secondItem="d3C-Hr-HY9" secondAttribute="top" id="bAh-KL-k6i"/>
                                                 <constraint firstItem="d3C-Hr-HY9" firstAttribute="leading" secondItem="KQQ-6F-axJ" secondAttribute="leading" constant="16" id="eJB-90-3Ig"/>
                                                 <constraint firstItem="d3C-Hr-HY9" firstAttribute="top" secondItem="KQQ-6F-axJ" secondAttribute="top" constant="4" id="fRM-GC-wxN"/>
+                                                <constraint firstItem="XTV-gG-Mdd" firstAttribute="bottom" secondItem="d3C-Hr-HY9" secondAttribute="bottom" id="kIA-gL-ta7"/>
                                                 <constraint firstAttribute="bottom" secondItem="d3C-Hr-HY9" secondAttribute="bottom" constant="4" id="oAe-WH-m0Z"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -73,6 +85,7 @@
                                         <connections>
                                             <outlet property="cellImage" destination="d3C-Hr-HY9" id="54i-9p-LtO"/>
                                             <outlet property="dateLabel" destination="L1t-iV-lSF" id="GwK-Ct-I1u"/>
+                                            <outlet property="gradientView" destination="XTV-gG-Mdd" id="gSX-a0-65T"/>
                                             <outlet property="likeButton" destination="ua3-IO-t9x" id="Tgs-ou-Mg0"/>
                                         </connections>
                                     </tableViewCell>

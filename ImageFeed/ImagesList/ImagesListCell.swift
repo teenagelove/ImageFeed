@@ -1,9 +1,10 @@
 import UIKit
 
 final class ImagesListCell: UITableViewCell {
-    @IBOutlet private weak var cellImage: UIImageView!
-    @IBOutlet private weak var likeButton: UIButton!
-    @IBOutlet private weak var dateLabel: UILabel!
+    @IBOutlet weak var cellImage: UIImageView!
+    @IBOutlet weak var likeButton: UIButton!
+    @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet private weak var gradientView: UIView!
     
     static let reuseIdentifier = "ImagesListCell"
     
@@ -18,12 +19,7 @@ final class ImagesListCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        gradientLayer.frame = CGRect(
-            x:0,
-            y: cellImage.frame.midY,
-            width: cellImage.bounds.width,
-            height: 30
-        )
+        gradientLayer.frame = gradientView.bounds
     }
     
     private func setupGradientForTextArea() {
@@ -34,6 +30,6 @@ final class ImagesListCell: UITableViewCell {
         
         gradientLayer.cornerRadius = 5
         
-        cellImage.layer.addSublayer(gradientLayer)
+        gradientView.layer.addSublayer(gradientLayer)
     }
 }
