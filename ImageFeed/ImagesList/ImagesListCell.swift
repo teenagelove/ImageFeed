@@ -19,7 +19,7 @@ final class ImagesListCell: UITableViewCell {
         super.layoutSubviews()
         
         gradientLayer.frame = CGRect(
-            x: 0,
+            x:0,
             y: cellImage.frame.midY,
             width: cellImage.bounds.width,
             height: 30
@@ -28,8 +28,8 @@ final class ImagesListCell: UITableViewCell {
     
     private func setupGradientForTextArea() {
         gradientLayer.colors = [
-            UIColor(red: 26/255, green: 27/255, blue: 34/255, alpha: 0).cgColor,
-            UIColor(red: 26/255, green: 27/255, blue: 34/255, alpha: 0.2).cgColor
+            UIColor.ypBlack.withAlphaComponent(0).cgColor,
+            UIColor.ypBlack.withAlphaComponent(0.2).cgColor,
         ]
         
         gradientLayer.cornerRadius = 5
