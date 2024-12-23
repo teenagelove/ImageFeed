@@ -21,7 +21,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                                 <color key="backgroundColor" name="YP Black"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ImagesListCell" rowHeight="326" id="1CA-jS-O8m" customClass="ImagesListCell" customModule="ImageFeed" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ImagesListCell" rowHeight="326" id="1CA-jS-O8m" customClass="ImagesListCell" customModule="ImageFeed">
                                         <rect key="frame" x="0.0" y="50" width="393" height="326"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="1CA-jS-O8m" id="KQQ-6F-axJ">
@@ -38,7 +38,7 @@
                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBunds" value="YES"/>
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XTV-gG-Mdd" userLabel="Gradient View">
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XTV-gG-Mdd" userLabel="Gradient View" customClass="GradientView" customModule="ImageFeed">
                                                     <rect key="frame" x="16" y="292" width="361" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="sRF-Uf-TG6"/>
@@ -85,7 +85,6 @@
                                         <connections>
                                             <outlet property="cellImage" destination="d3C-Hr-HY9" id="54i-9p-LtO"/>
                                             <outlet property="dateLabel" destination="L1t-iV-lSF" id="GwK-Ct-I1u"/>
-                                            <outlet property="gradientView" destination="XTV-gG-Mdd" id="gSX-a0-65T"/>
                                             <outlet property="likeButton" destination="ua3-IO-t9x" id="Tgs-ou-Mg0"/>
                                         </connections>
                                     </tableViewCell>
