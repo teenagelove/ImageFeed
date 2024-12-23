@@ -38,6 +38,15 @@
                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBunds" value="YES"/>
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XTV-gG-Mdd" userLabel="Gradient View">
+                                                    <rect key="frame" x="16" y="292" width="361" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="30" id="sRF-Uf-TG6"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ua3-IO-t9x" userLabel="Like Button">
                                                     <rect key="frame" x="311" y="4" width="66" height="44"/>
                                                     <constraints>
@@ -53,15 +62,6 @@
                                                     <color key="textColor" name="YP White"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XTV-gG-Mdd" userLabel="Gradient View">
-                                                    <rect key="frame" x="16" y="292" width="361" height="30"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="30" id="sRF-Uf-TG6"/>
-                                                    </constraints>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                                                    </userDefinedRuntimeAttributes>
-                                                </view>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
