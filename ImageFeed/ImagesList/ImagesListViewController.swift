@@ -1,44 +1,58 @@
 import UIKit
 
 final class ImagesListViewController: UIViewController {
+    // MARK: - @IBOutlets
     @IBOutlet private var tableView: UITableView!
     
+    // MARK: - Private properties
     private let photosName: [String] = Array(0..<20).map{ "\($0)" }
     
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateFormat = "dd MMMM yyyy"
-        formatter.locale = Locale(identifier: "ru_RU")
+        formatter.dateFormat = DateConstants.defaultDateFormat
+        formatter.locale = Locale(identifier: DateConstants.defaultLocale)
         return formatter
     }()
     
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.rowHeight = 200
-        tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+        tableView.contentInset = UIConstants.tableViewContentInsets
     }
     
+    // MARK: - Private functions
     private func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         guard let image = UIImage(named: photosName[indexPath.row]) else {
-            print("Failed to create image")
+            print(ErrorConstants.failedImage)
             return
         }
         
         cell.cellImage.image = image
-        
         cell.dateLabel.text = dateFormatter.string(from: Date())
         
-        if indexPath.row % 2 == 0 {
-            cell.likeButton.setImage(UIImage(named: "Active Like"), for: .normal)
-        }
+        let likeImage = indexPath.row.isEven
+        ? UIImage(named: ImageConstants.activeLike)
+        : UIImage(named: ImageConstants.noActiveLike)
+        
+        cell.likeButton.setImage(likeImage, for: .normal)
     }
 }
 
 // MARK: - UITableViewDelegate
 extension ImagesListViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) { }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard let image = UIImage(named: photosName[indexPath.row]) else {
+            return 0
+        }
         
+        let imageInsets = UIConstants.cellImageInsets
+        let imageViewWidth = tableView.frame.width - imageInsets.left - imageInsets.right
+        let cellHeight = image.size.height * (imageViewWidth / image.size.width) + imageInsets.top + imageInsets.bottom
+        
+        return cellHeight
     }
 }
 
@@ -52,7 +66,7 @@ extension ImagesListViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for: indexPath)
         
         guard let imagesListCell = cell as? ImagesListCell else {
-            print("Failed to cast ImagesListCell")
+            print(ErrorConstants.failedCast)
             return UITableViewCell()
         }
         
