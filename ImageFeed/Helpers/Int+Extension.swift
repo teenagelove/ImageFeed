@@ -1,5 +1,1 @@
-extension Int {
-    var isEven: Bool {
-        return self % 2 == 0
-    }
-}
+extension Int { var isEven: Bool { self % 2 == 0 } }

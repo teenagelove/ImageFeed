@@ -6,11 +6,12 @@ final class ImagesListViewController: UIViewController {
     
     // MARK: - Private properties
     private let photosName: [String] = Array(0..<20).map{ "\($0)" }
+    private let currentDate = Date()
     
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateFormat = DateConstants.defaultDateFormat
-        formatter.locale = Locale(identifier: DateConstants.defaultLocale)
+        formatter.dateFormat = Constants.Date.defaultDateFormat
+        formatter.locale = Locale(identifier: Constants.Date.defaultLocale)
         return formatter
     }()
     
@@ -18,22 +19,22 @@ final class ImagesListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.contentInset = UIConstants.tableViewContentInsets
+        tableView.contentInset = Constants.UI.tableViewContentInsets
     }
     
     // MARK: - Private functions
     private func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         guard let image = UIImage(named: photosName[indexPath.row]) else {
-            print(ErrorConstants.failedImage)
+            print(Constants.Error.failedImage)
             return
         }
         
         cell.cellImage.image = image
-        cell.dateLabel.text = dateFormatter.string(from: Date())
+        cell.dateLabel.text = dateFormatter.string(from: currentDate)
         
         let likeImage = indexPath.row.isEven
-        ? UIImage(named: ImageConstants.activeLike)
-        : UIImage(named: ImageConstants.noActiveLike)
+        ? UIImage(named: Constants.Image.activeLike)
+        : UIImage(named: Constants.Image.noActiveLike)
         
         cell.likeButton.setImage(likeImage, for: .normal)
     }
@@ -41,14 +42,16 @@ final class ImagesListViewController: UIViewController {
 
 // MARK: - UITableViewDelegate
 extension ImagesListViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) { }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // TODO: - Добавить логику при нажатии на ячейку
+    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let image = UIImage(named: photosName[indexPath.row]) else {
             return 0
         }
         
-        let imageInsets = UIConstants.cellImageInsets
+        let imageInsets = Constants.UI.cellImageInsets
         let imageViewWidth = tableView.frame.width - imageInsets.left - imageInsets.right
         let cellHeight = image.size.height * (imageViewWidth / image.size.width) + imageInsets.top + imageInsets.bottom
         
@@ -63,10 +66,8 @@ extension ImagesListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for: indexPath)
-        
-        guard let imagesListCell = cell as? ImagesListCell else {
-            print(ErrorConstants.failedCast)
+        guard let imagesListCell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for: indexPath) as? ImagesListCell else {
+            print(Constants.Error.failedCast)
             return UITableViewCell()
         }
         
