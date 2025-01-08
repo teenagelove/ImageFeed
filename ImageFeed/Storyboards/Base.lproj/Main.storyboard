@@ -124,7 +124,7 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Photo" translatesAutoresizingMaskIntoConstraints="NO" id="qm4-5E-lqf" userLabel="Avatar Image View">
                                 <rect key="frame" x="16" y="91" width="70" height="70"/>
                             </imageView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="A97-Db-SRO" userLabel="Labels View">
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="A97-Db-SRO" userLabel="Labels Stack View">
                                 <rect key="frame" x="16" y="169" width="361" height="75"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Екатерина Новикова" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0z2-TF-Y0y" userLabel="Name Label">
@@ -155,6 +155,9 @@
                                 </constraints>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="Exit"/>
+                                <connections>
+                                    <action selector="didTapLogoutButton" destination="L4S-bJ-4ly" eventType="touchUpInside" id="w6s-BI-jqD"/>
+                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="HDE-Hb-zjH"/>
@@ -170,6 +173,12 @@
                             <constraint firstItem="HDE-Hb-zjH" firstAttribute="top" secondItem="EC5-bS-eVn" secondAttribute="top" constant="-32" id="wAx-Tt-cr2"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="avatarImageView" destination="qm4-5E-lqf" id="Lby-WN-k69"/>
+                        <outlet property="descriptionLabel" destination="Zzy-J6-TU6" id="qvt-EN-LwM"/>
+                        <outlet property="loginNameLabel" destination="ruG-8C-bnZ" id="ks6-0t-KP1"/>
+                        <outlet property="nameLabel" destination="0z2-TF-Y0y" id="IMV-xu-SZ7"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mSe-UV-R6K" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
