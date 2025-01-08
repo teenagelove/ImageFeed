@@ -121,8 +121,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Photo" translatesAutoresizingMaskIntoConstraints="NO" id="qm4-5E-lqf" userLabel="Avatar Image View">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Stub Photo" translatesAutoresizingMaskIntoConstraints="NO" id="qm4-5E-lqf" userLabel="Avatar Image View">
                                 <rect key="frame" x="16" y="91" width="70" height="70"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="70" id="6Sz-MG-yHP"/>
+                                    <constraint firstAttribute="width" secondItem="qm4-5E-lqf" secondAttribute="height" multiplier="1:1" id="XoJ-lW-3jd"/>
+                                </constraints>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="A97-Db-SRO" userLabel="Labels Stack View">
                                 <rect key="frame" x="16" y="169" width="361" height="75"/>
@@ -147,14 +151,14 @@
                                     </label>
                                 </subviews>
                             </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EC5-bS-eVn" userLabel="Logout Button">
-                                <rect key="frame" x="321" y="91" width="48" height="44"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EC5-bS-eVn" userLabel="Logout Button">
+                                <rect key="frame" x="325" y="91" width="44" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="XrT-ZJ-hhL"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="Yhn-EY-l7L"/>
                                 </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" image="Exit"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="Exit"/>
                                 <connections>
                                     <action selector="didTapLogoutButton" destination="L4S-bJ-4ly" eventType="touchUpInside" id="w6s-BI-jqD"/>
                                 </connections>
@@ -189,7 +193,7 @@
         <image name="1" width="985" height="1280"/>
         <image name="Exit" width="24" height="24"/>
         <image name="No Active Like" width="42" height="42"/>
-        <image name="Photo" width="70" height="70"/>
+        <image name="Stub Photo" width="70" height="70"/>
         <namedColor name="YP Background">
             <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
