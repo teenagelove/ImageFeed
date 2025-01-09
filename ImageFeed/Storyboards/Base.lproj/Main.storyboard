@@ -87,6 +87,7 @@
                                             <outlet property="cellImage" destination="d3C-Hr-HY9" id="54i-9p-LtO"/>
                                             <outlet property="dateLabel" destination="L1t-iV-lSF" id="GwK-Ct-I1u"/>
                                             <outlet property="likeButton" destination="ua3-IO-t9x" id="Tgs-ou-Mg0"/>
+                                            <segue destination="S3I-DX-29k" kind="show" id="adh-fC-7rB"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -112,7 +113,37 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="976.33587786259534" y="-27.464788732394368"/>
+            <point key="canvasLocation" x="985" y="-27"/>
+        </scene>
+        <!--Single Image View Controller-->
+        <scene sceneID="Gus-g7-Sa7">
+            <objects>
+                <viewController id="S3I-DX-29k" customClass="SingleImageViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5rm-oe-1hE">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="IBG-dM-2zJ">
+                                <rect key="frame" x="0.0" y="103" width="393" height="666"/>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="rTV-eo-mqa"/>
+                        <color key="backgroundColor" name="YP Black"/>
+                        <constraints>
+                            <constraint firstItem="IBG-dM-2zJ" firstAttribute="top" secondItem="rTV-eo-mqa" secondAttribute="top" id="7Ne-ux-nKz"/>
+                            <constraint firstItem="IBG-dM-2zJ" firstAttribute="bottom" secondItem="rTV-eo-mqa" secondAttribute="bottom" id="Ueg-S0-SPR"/>
+                            <constraint firstItem="rTV-eo-mqa" firstAttribute="trailing" secondItem="IBG-dM-2zJ" secondAttribute="trailing" id="npc-tx-FFE"/>
+                            <constraint firstItem="IBG-dM-2zJ" firstAttribute="leading" secondItem="rTV-eo-mqa" secondAttribute="leading" id="z11-50-LUp"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="FHK-GG-kHX"/>
+                    <connections>
+                        <outlet property="imageView" destination="IBG-dM-2zJ" id="IIX-FR-inr"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5m4-bb-KuD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1978" y="-27"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="09c-wc-vLZ">
@@ -124,6 +155,9 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="selectedImageTintColor" name="YP White"/>
                         <tabBarAppearance key="standardAppearance">
+                            <color key="backgroundColor" name="YP Black"/>
+                        </tabBarAppearance>
+                        <tabBarAppearance key="scrollEdgeAppearance">
                             <color key="backgroundColor" name="YP Black"/>
                         </tabBarAppearance>
                     </tabBar>
@@ -238,6 +272,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="0" width="1600" height="1059"/>
         <image name="1" width="985" height="1280"/>
         <image name="Exit" width="24" height="24"/>
         <image name="No Active Like" width="42" height="42"/>
