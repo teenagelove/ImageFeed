@@ -10,6 +10,7 @@ enum Constants {
     enum Error {
         static let failedCast = "Failed to cast ImagesListCell"
         static let failedImage = "Failed to load image"
+        static let failedSegue = "Invalid segue destination"
     }
 
     enum Image {
@@ -20,5 +21,9 @@ enum Constants {
     enum UI {
         static let tableViewContentInsets = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
         static let cellImageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
+    }
+    
+    enum Segues {
+        static let singleImage = "ShowSingleImage"
     }
 }
