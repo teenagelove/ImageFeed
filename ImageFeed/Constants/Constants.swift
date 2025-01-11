@@ -26,4 +26,9 @@ enum Constants {
     enum Segues {
         static let singleImage = "ShowSingleImage"
     }
+    
+    enum ZoomScale {
+        static let minimum = 0.1
+        static let maximum = 1.25
+    }
 }
