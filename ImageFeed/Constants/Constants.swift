@@ -16,6 +16,8 @@ enum Constants {
     enum Image {
         static let activeLike = "Active Like"
         static let noActiveLike = "No Active Like"
+        static let stubPhoto = "Stub Photo"
+        static let exitProfile = "Exit"
     }
 
     enum UI {
@@ -30,5 +32,16 @@ enum Constants {
     enum ZoomScale {
         static let minimum = 0.1
         static let maximum = 1.25
+    }
+    
+    enum MockText {
+        static let name = "Екатерина Новикова"
+        static let loginName = "@ekaterina_nov"
+        static let description = "Hello, World!"
+    }
+    
+    enum Font {
+        static let header = UIFont.systemFont(ofSize: 23, weight: .semibold)
+        static let regular = UIFont.systemFont(ofSize: 13, weight: .regular)
     }
 }

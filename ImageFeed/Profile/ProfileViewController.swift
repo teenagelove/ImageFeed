@@ -4,43 +4,38 @@ final class ProfileViewController: UIViewController {
     // MARK: - UI Components
     private lazy var avatarImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "Stub Photo")
-        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(named: Constants.Image.stubPhoto)
         return imageView
     }()
     
     private lazy var backButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "Exit"), for: .normal)
+        button.setImage(UIImage(named: Constants.Image.exitProfile), for: .normal)
         button.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
-        label.text = "Екатерина Новикова"
-        label.font = .systemFont(ofSize: 23, weight: .semibold)
+        label.text = Constants.MockText.name
+        label.font = Constants.Font.header
         label.textColor = .ypWhite
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private lazy var loginNameLabel: UILabel = {
         let label = UILabel()
-        label.text = "@ekaterina_nov"
-        label.font = .systemFont(ofSize: 13, weight: .regular)
+        label.text = Constants.MockText.loginName
+        label.font = Constants.Font.regular
         label.textColor = .ypGray
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
-        label.text = "Hello, World!"
-        label.font = .systemFont(ofSize: 13, weight: .regular)
+        label.text = Constants.MockText.description
+        label.font = Constants.Font.regular
         label.textColor = .ypWhite
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -54,6 +49,7 @@ final class ProfileViewController: UIViewController {
     // MARK: - Setup Methods
     private func setupUI() {
         [avatarImageView, backButton, nameLabel, loginNameLabel, descriptionLabel].forEach{ subview in
+            subview.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(subview)
         }
     }
