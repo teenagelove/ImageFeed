@@ -44,4 +44,12 @@ enum Constants {
         static let header = UIFont.systemFont(ofSize: 23, weight: .semibold)
         static let regular = UIFont.systemFont(ofSize: 13, weight: .regular)
     }
+    
+    enum API {
+        static let accessKey = "WTPbKPLD7gWVQCvrbJRzrt_rIwYCoevVitNRhMiExZ0"
+        static let secretKey = "9Z5Law4941dfR7phZCDpg_bAlfKvN042RjsqdeaM_Kw"
+        static let redirectURI = "urn:ietf:wg:oauth:2.0:oob"
+        static let accessScope = "public+read_user_info+write_likes"
+        static let defaultBaseURL: URL = URL(string: "https://api.unsplash.com/v1")!
+    }
 }
