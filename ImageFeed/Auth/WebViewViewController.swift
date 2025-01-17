@@ -13,6 +13,13 @@ final class WebViewViewController: UIViewController {
         return webView
     }()
     
+    private lazy var progressView: UIProgressView = {
+        let progressView = UIProgressView()
+        progressView.progressTintColor = .ypBlack
+        progressView.progress = 0.5
+        return progressView
+    }()
+    
     // MARK: Lifecycle
     override func loadView() {
         super.loadView()
@@ -26,12 +33,14 @@ final class WebViewViewController: UIViewController {
     // MARK: - Setup Methods
     private func setupView() {
         view.backgroundColor = .white
+        webView.navigationDelegate = self
     }
     
     private func setupSubviews() {
-        webView.translatesAutoresizingMaskIntoConstraints = false
-        webView.navigationDelegate = self
-        view.addSubview(webView)
+        [webView, progressView].forEach{ subViews in
+            subViews.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(subViews)
+        }
     }
     
     private func setupWebView() {
@@ -61,7 +70,10 @@ final class WebViewViewController: UIViewController {
             webView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             webView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             webView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            webView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            webView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            progressView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            progressView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            progressView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
     }
 }
