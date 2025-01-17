@@ -7,17 +7,20 @@ enum Constants {
         static let defaultLocale = "ru_RU"
     }
 
-    enum Error {
+    enum Errors {
         static let failedCast = "Failed to cast ImagesListCell"
         static let failedImage = "Failed to load image"
         static let failedSegue = "Invalid segue destination"
+        static let failedURL = "Invalid URL"
     }
 
-    enum Image {
+    enum Images {
         static let activeLike = "Active Like"
         static let noActiveLike = "No Active Like"
         static let stubPhoto = "Stub Photo"
         static let exitProfile = "Exit"
+        static let logoUnsplash = "Logo_of_Unsplash"
+        static let navBackButton = "nav_back_button"
     }
 
     enum UI {
@@ -27,6 +30,7 @@ enum Constants {
     
     enum Segues {
         static let singleImage = "ShowSingleImage"
+        static let webView = "ShowWebView"
     }
     
     enum ZoomScale {
@@ -40,9 +44,10 @@ enum Constants {
         static let description = "Hello, World!"
     }
     
-    enum Font {
-        static let header = UIFont.systemFont(ofSize: 23, weight: .semibold)
+    enum Fonts {
+        static let header = UIFont.systemFont(ofSize: 23, weight: .medium)
         static let regular = UIFont.systemFont(ofSize: 13, weight: .regular)
+        static let loginButton = UIFont.systemFont(ofSize: 17, weight: .medium)
     }
     
     enum API {
@@ -51,5 +56,14 @@ enum Constants {
         static let redirectURI = "urn:ietf:wg:oauth:2.0:oob"
         static let accessScope = "public+read_user_info+write_likes"
         static let defaultBaseURL: URL = URL(string: "https://api.unsplash.com/v1")!
+        static let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
+    }
+    
+    enum Titles {
+        static let loginButton = "Войти"
+    }
+    
+    enum Radii {
+        static let loginButton: CGFloat = 16
     }
 }

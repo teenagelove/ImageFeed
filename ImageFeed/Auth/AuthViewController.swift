@@ -1,0 +1,70 @@
+import UIKit
+
+
+final class AuthViewController: UIViewController {
+    // MARK: - UI Components
+    private lazy var logoView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: Constants.Images.logoUnsplash))
+        return imageView
+    }()
+    
+    private lazy var loginButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = .ypWhite
+        button.layer.cornerRadius = Constants.Radii.loginButton
+        button.setTitle(Constants.Titles.loginButton, for: .normal)
+        button.setTitleColor(.ypBlack, for: .normal)
+        button.titleLabel?.font = Constants.Fonts.loginButton
+        button.titleLabel?.textAlignment = .center
+        button.addTarget(self, action: #selector(didTapLoginButton), for: .touchUpInside)
+        return button
+    }()
+    
+    // MARK: Lifecycle
+    override func loadView() {
+        super.loadView()
+        
+        setupView()
+        setupSubviews()
+        setupBackButton()
+        setupConstraints()
+        
+    }
+    
+    // MARK: - Setup Methods
+    private func setupView() {
+        view.backgroundColor = .ypBlack
+    }
+    
+    private func setupSubviews() {
+        [logoView, loginButton].forEach{ subview in
+            subview.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(subview)
+        }
+    }
+    
+    private func setupBackButton() {
+        navigationController?.navigationBar.backIndicatorImage = UIImage(named: Constants.Images.navBackButton)
+        navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: Constants.Images.navBackButton)
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        navigationItem.backBarButtonItem?.tintColor = .ypBlack
+    }
+    
+    private func setupConstraints() {
+        NSLayoutConstraint.activate([
+            logoView.heightAnchor.constraint(equalToConstant: 60),
+            logoView.widthAnchor.constraint(equalToConstant: 60),
+            logoView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            logoView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            loginButton.heightAnchor.constraint(equalToConstant: 48),
+            loginButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            loginButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            loginButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -90),
+        ])
+    }
+    
+    // MARK: - Actions
+    @objc private func didTapLoginButton() {
+        performSegue(withIdentifier: Constants.Segues.webView, sender: nil)
+    }
+}
