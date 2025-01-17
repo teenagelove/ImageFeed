@@ -12,6 +12,7 @@ enum Constants {
         static let failedImage = "Failed to load image"
         static let failedSegue = "Invalid segue destination"
         static let failedURL = "Invalid URL"
+        static let failedGetCode = "Failed to get code"
     }
 
     enum Images {
@@ -57,6 +58,7 @@ enum Constants {
         static let accessScope = "public+read_user_info+write_likes"
         static let defaultBaseURL: URL = URL(string: "https://api.unsplash.com/v1")!
         static let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
+        static let oauthPath = "/oauth/authorize/native"
     }
     
     enum Titles {

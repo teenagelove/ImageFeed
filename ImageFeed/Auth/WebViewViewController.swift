@@ -1,8 +1,11 @@
 import UIKit
-import WebKit
+@preconcurrency import WebKit
 
 
 final class WebViewViewController: UIViewController {
+    // MARK: - Properties
+    weak var delegate: WebViewViewControllerDelegate?
+    
     // MARK: - UI Components
     private lazy var webView: WKWebView = {
         let webView = WKWebView()
@@ -27,6 +30,7 @@ final class WebViewViewController: UIViewController {
     
     private func setupSubviews() {
         webView.translatesAutoresizingMaskIntoConstraints = false
+        webView.navigationDelegate = self
         view.addSubview(webView)
     }
     
@@ -62,3 +66,34 @@ final class WebViewViewController: UIViewController {
     }
 }
 
+
+extension WebViewViewController: WKNavigationDelegate {
+    func webView(
+        _ webView: WKWebView,
+        decidePolicyFor navigationAction: WKNavigationAction,
+        decisionHandler: @escaping (
+            WKNavigationActionPolicy
+        ) -> Void
+    ) {
+        if let code = code(from: navigationAction) {
+            //TODO: process code
+            decisionHandler(.cancel)
+        } else {
+            decisionHandler(.allow)
+        }
+    }
+    
+    private func code(from navigationAction: WKNavigationAction) -> String? {
+        guard
+            let url = navigationAction.request.url,
+            let urlComponents = URLComponents(string: url.absoluteString),
+            urlComponents.path == Constants.API.oauthPath,
+            let items = urlComponents.queryItems,
+            let codeItem = items.first(where: { $0.name == "code" })
+        else {
+            print(Constants.Errors.failedGetCode)
+            return nil
+        }
+        return codeItem.value
+    }
+}

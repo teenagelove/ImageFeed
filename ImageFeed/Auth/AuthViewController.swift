@@ -28,7 +28,21 @@ final class AuthViewController: UIViewController {
         setupSubviews()
         setupBackButton()
         setupConstraints()
-        
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == Constants.Segues.webView {
+            if segue.identifier == Constants.Segues.webView {
+                guard let webViewController = segue.destination as? WebViewViewController
+                else {
+                    assertionFailure(Constants.Errors.failedSegue)
+                    return
+                }
+                webViewController.delegate = self
+            } else {
+                prepare(for: segue, sender: sender)
+            }
+        }
     }
     
     // MARK: - Setup Methods
@@ -66,5 +80,16 @@ final class AuthViewController: UIViewController {
     // MARK: - Actions
     @objc private func didTapLoginButton() {
         performSegue(withIdentifier: Constants.Segues.webView, sender: nil)
+    }
+}
+
+
+extension AuthViewController: WebViewViewControllerDelegate {
+    func webViewViewController(_ webViewViewController: WebViewViewController, didAuthenticateWithCode code: String) {
+        
+    }
+    
+    func webViewViewControllerDidCancel(_ webViewViewController: WebViewViewController) {
+        webViewViewController.dismiss(animated: true)
     }
 }
