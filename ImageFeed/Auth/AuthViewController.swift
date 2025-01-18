@@ -85,10 +85,14 @@ final class AuthViewController: UIViewController {
 
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ webViewViewController: WebViewViewController, didAuthenticateWithCode code: String) {
-        OAuth2Service.shared.fetchOAuthToken(code: code, completion: {result in
+        OAuth2Service.shared.fetchOAuthToken(code: code, completion: {[weak self] result in
             switch result {
             case .success(let token):
                 print("Success")
+                if let imageListViewController = self?.storyboard?.instantiateViewController(withIdentifier: "ImagesListViewController") as? ImagesListViewController {
+                    imageListViewController.modalPresentationStyle = .fullScreen
+                    self?.present(imageListViewController, animated: true)
+                }
             case .failure(let error):
                 print("Error: \(error.localizedDescription)")
             }
