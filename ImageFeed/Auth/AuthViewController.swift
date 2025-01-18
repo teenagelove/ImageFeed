@@ -2,6 +2,9 @@ import UIKit
 
 
 final class AuthViewController: UIViewController {
+    // MARK: - Properties
+    weak var delegate: AuthViewControllerDelegate?
+    
     // MARK: - UI Components
     private lazy var logoView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: Constants.Images.logoUnsplash))
@@ -85,18 +88,19 @@ final class AuthViewController: UIViewController {
 
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ webViewViewController: WebViewViewController, didAuthenticateWithCode code: String) {
-        OAuth2Service.shared.fetchOAuthToken(code: code, completion: {[weak self] result in
+        webViewViewController.dismiss(animated: true)
+        
+        OAuth2Service.shared.fetchOAuthToken(code: code) { [weak self] result in
+            guard let self else { return }
+            
             switch result {
             case .success(let token):
-                print("Success")
-                if let imageListViewController = self?.storyboard?.instantiateViewController(withIdentifier: "ImagesListViewController") as? ImagesListViewController {
-                    imageListViewController.modalPresentationStyle = .fullScreen
-                    self?.present(imageListViewController, animated: true)
-                }
+                delegate?.didAuthenticate(self)
+                print("Succes")
             case .failure(let error):
-                print("Error: \(error.localizedDescription)")
+                print("\(Constants.Errors.failedFetchToken) - \(error)")
             }
-        })
+        }
     }
     
     func webViewViewControllerDidCancel(_ webViewViewController: WebViewViewController) {

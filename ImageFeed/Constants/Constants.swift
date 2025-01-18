@@ -15,7 +15,9 @@ enum Constants {
         static let failedGetCode = "Failed to get code"
         static let failedRequest = "Failed to create request"
         static let failedDecode = "Failed to decode JSON"
-        static let failedFetch = "Failed to fetch data"
+        static let failedFetchData = "Failed to fetch data"
+        static let failedFetchToken = "Error fetching token"
+        static let failedWindow = "Invalid window configuration"
     }
 
     enum Images {
@@ -25,6 +27,7 @@ enum Constants {
         static let exitProfile = "Exit"
         static let logoUnsplash = "Logo_of_Unsplash"
         static let navBackButton = "nav_back_button"
+        static let logo = "Logo"
     }
 
     enum UI {
@@ -35,6 +38,8 @@ enum Constants {
     enum Segues {
         static let singleImage = "ShowSingleImage"
         static let webView = "ShowWebView"
+        static let authView = "ShowAuthView"
+        static let tableView = "ShowTableView"
     }
     
     enum ZoomScale {
@@ -76,5 +81,9 @@ enum Constants {
     
     enum Storage {
         static let accessToken = "accessToken"
+    }
+    
+    enum Storyboards {
+        static let tabBar = "TabBarController"
     }
 }

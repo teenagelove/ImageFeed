@@ -25,7 +25,7 @@ final class OAuth2Service {
                 }
             case .failure(let error):
                 print(error)
-                print(Constants.Errors.failedFetch)
+                print(Constants.Errors.failedFetchData)
                 completion(.failure(error))
             }
         }
