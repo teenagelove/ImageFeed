@@ -13,6 +13,9 @@ enum Constants {
         static let failedSegue = "Invalid segue destination"
         static let failedURL = "Invalid URL"
         static let failedGetCode = "Failed to get code"
+        static let failedRequest = "Failed to create request"
+        static let failedDecode = "Failed to decode JSON"
+        static let failedFetch = "Failed to fetch data"
     }
 
     enum Images {
@@ -55,10 +58,12 @@ enum Constants {
         static let accessKey = "WTPbKPLD7gWVQCvrbJRzrt_rIwYCoevVitNRhMiExZ0"
         static let secretKey = "9Z5Law4941dfR7phZCDpg_bAlfKvN042RjsqdeaM_Kw"
         static let redirectURI = "urn:ietf:wg:oauth:2.0:oob"
-        static let accessScope = "public+read_user_info+write_likes"
-        static let defaultBaseURL: URL = URL(string: "https://api.unsplash.com/v1")!
+        static let accessScope = "public+read_user+write_likes"
+        static let defaultBaseURL: URL = URL(string: "https://unsplash.com")!
         static let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
         static let oauthPath = "/oauth/authorize/native"
+        static let tokenPath = "/oauth/token"
+        static let authorizationCodeString = "authorization_code"
     }
     
     enum Titles {
@@ -67,5 +72,9 @@ enum Constants {
     
     enum Radii {
         static let loginButton: CGFloat = 16
+    }
+    
+    enum Storage {
+        static let accessToken = "accessToken"
     }
 }
