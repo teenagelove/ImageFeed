@@ -16,11 +16,10 @@ final class WebViewViewController: UIViewController {
     private lazy var progressView: UIProgressView = {
         let progressView = UIProgressView()
         progressView.progressTintColor = .ypBlack
-        progressView.progress = 0.5
         return progressView
     }()
     
-    // MARK: Lifecycle
+    // MARK: Lifecycle & KVO Handling
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
@@ -29,10 +28,41 @@ final class WebViewViewController: UIViewController {
         setupConstraints()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        webView.addObserver(
+            self,
+            forKeyPath: #keyPath(WKWebView.estimatedProgress),
+            context: nil
+        )
+        updateProgressView()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        webView.removeObserver(
+            self,
+            forKeyPath: #keyPath(WKWebView.estimatedProgress),
+            context: nil
+        )
+    }
+    
+    override func observeValue(
+        forKeyPath keyPath: String?,
+        of object: Any?,
+        change: [NSKeyValueChangeKey : Any]?,
+        context: UnsafeMutableRawPointer?
+    ) {
+        if keyPath == #keyPath(WKWebView.estimatedProgress) {
+            updateProgressView()
+        } else {
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+        }
+    }
+    
     // MARK: - Setup Methods
     private func setupView() {
         view.backgroundColor = .white
-        webView.navigationDelegate = self
     }
     
     private func setupSubviews() {
@@ -43,6 +73,8 @@ final class WebViewViewController: UIViewController {
     }
     
     private func setupWebView() {
+        webView.navigationDelegate = self
+        
         guard var urlComponents = URLComponents(string: Constants.API.unsplashAuthorizeURLString) else {
             print(Constants.Errors.failedURL)
             return
@@ -75,9 +107,16 @@ final class WebViewViewController: UIViewController {
             progressView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
     }
+    
+    // MARK: -  Updates UI
+    private func updateProgressView() {
+        progressView.progress = Float(webView.estimatedProgress)
+        progressView.isHidden = fabs(webView.estimatedProgress - 1) <= 0.0001
+    }
 }
 
 
+// MARK: - WKNavigationDelegate
 extension WebViewViewController: WKNavigationDelegate {
     func webView(
         _ webView: WKWebView,
