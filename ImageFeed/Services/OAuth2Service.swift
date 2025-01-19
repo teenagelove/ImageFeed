@@ -35,7 +35,7 @@ final class OAuth2Service {
     
     private func makeOAuthRequest(code: String) -> URLRequest? {
         
-        guard var urlComponents = URLComponents(url: Constants.API.defaultBaseURL, resolvingAgainstBaseURL: false) else {
+        guard let url = Constants.API.defaultBaseURL, var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
             print(Constants.Errors.failedURL)
             return nil
         }

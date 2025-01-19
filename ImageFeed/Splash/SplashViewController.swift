@@ -60,7 +60,7 @@ extension SplashViewController {
     }
     
     private func checkToken() {
-        guard let token = OAuth2TokenStorage.shared.token else {
+        guard OAuth2TokenStorage.shared.token != nil else {
             performSegue(withIdentifier: Constants.Segues.authView, sender: nil)
             return
         }
@@ -73,8 +73,11 @@ extension SplashViewController {
             return
         }
         
-        let tabBarController = UIStoryboard(name: "Main",bundle: nil)
-            .instantiateViewController(withIdentifier: Constants.Storyboards.tabBar) as! UITabBarController
+        guard let tabBarController = UIStoryboard(name: "Main",bundle: nil)
+            .instantiateViewController(withIdentifier: Constants.Storyboards.tabBar) as? UITabBarController else {
+            assertionFailure(Constants.Errors.failedStoryboard)
+            return
+        }
         
         window.rootViewController = tabBarController
     }
