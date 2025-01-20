@@ -90,6 +90,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
             guard let self else { return }
             
             switch result {
+                // TODO: - Не забыть про токен (let token)
             case .success:
                 webViewViewController.dismiss(animated: true)
                 delegate?.didAuthenticate(self)
