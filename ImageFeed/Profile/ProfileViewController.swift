@@ -4,13 +4,13 @@ final class ProfileViewController: UIViewController {
     // MARK: - UI Components
     private lazy var avatarImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: Constants.Image.stubPhoto)
+        imageView.image = UIImage(named: Constants.Images.stubPhoto)
         return imageView
     }()
     
     private lazy var backButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: Constants.Image.exitProfile), for: .normal)
+        button.setImage(UIImage(named: Constants.Images.exitProfile), for: .normal)
         button.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
         return button
     }()
@@ -18,7 +18,7 @@ final class ProfileViewController: UIViewController {
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.text = Constants.MockText.name
-        label.font = Constants.Font.header
+        label.font = Constants.Fonts.header
         label.textColor = .ypWhite
         return label
     }()
@@ -26,7 +26,7 @@ final class ProfileViewController: UIViewController {
     private lazy var loginNameLabel: UILabel = {
         let label = UILabel()
         label.text = Constants.MockText.loginName
-        label.font = Constants.Font.regular
+        label.font = Constants.Fonts.regular
         label.textColor = .ypGray
         return label
     }()
@@ -34,7 +34,7 @@ final class ProfileViewController: UIViewController {
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.text = Constants.MockText.description
-        label.font = Constants.Font.regular
+        label.font = Constants.Fonts.regular
         label.textColor = .ypWhite
         label.numberOfLines = 0
         return label

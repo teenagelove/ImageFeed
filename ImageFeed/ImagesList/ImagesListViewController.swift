@@ -28,7 +28,7 @@ final class ImagesListViewController: UIViewController {
                 let viewController = segue.destination as? SingleImageViewController,
                 let indexPath = sender as? IndexPath
             else {
-                assertionFailure(Constants.Error.failedSegue)
+                assertionFailure(Constants.Errors.failedSegue)
                 return
             }
             
@@ -40,7 +40,7 @@ final class ImagesListViewController: UIViewController {
     // MARK: - Private functions
     private func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         guard let image = UIImage(named: photosName[indexPath.row]) else {
-            print(Constants.Error.failedImage)
+            print(Constants.Errors.failedImage)
             return
         }
         
@@ -48,8 +48,8 @@ final class ImagesListViewController: UIViewController {
         cell.dateLabel.text = dateFormatter.string(from: currentDate)
         
         let likeImage = indexPath.row.isEven
-        ? UIImage(named: Constants.Image.activeLike)
-        : UIImage(named: Constants.Image.noActiveLike)
+        ? UIImage(named: Constants.Images.activeLike)
+        : UIImage(named: Constants.Images.noActiveLike)
         
         cell.likeButton.setImage(likeImage, for: .normal)
     }
@@ -82,7 +82,7 @@ extension ImagesListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let imagesListCell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for: indexPath) as? ImagesListCell else {
-            print(Constants.Error.failedCast)
+            print(Constants.Errors.failedCast)
             return UITableViewCell()
         }
         
