@@ -33,7 +33,6 @@ final class AuthViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == Constants.Segues.webView {
             if segue.identifier == Constants.Segues.webView {
                 guard let webViewController = segue.destination as? WebViewViewController
                 else {
@@ -44,7 +43,6 @@ final class AuthViewController: UIViewController {
             } else {
                 prepare(for: segue, sender: sender)
             }
-        }
     }
     
     // MARK: - Setup Methods
