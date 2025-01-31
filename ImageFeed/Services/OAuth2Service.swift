@@ -1,18 +1,41 @@
 import Foundation
 
+private enum AuthServiceError: Error {
+    case invalidRequest
+}
 
 final class OAuth2Service {
+    // MARK: - Singleton
     static let shared = OAuth2Service()
     
+    // MARK: - Private properties
+    private let urlSession = URLSession.shared
+    private var task: URLSessionTask?
+    private var lastCode: String?
+    
+    // MARK: - Init
     private init() {}
     
     func fetchOAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void) {
-        guard let request = makeOAuthRequest(code: code) else {
+        assert(Thread.isMainThread)
+        
+        guard lastCode != code else {
+            completion(.failure(AuthServiceError.invalidRequest))
+            return
+        }
+        
+        task?.cancel()
+        
+        lastCode = code
+        
+        guard
+            let request = makeOAuthRequest(code: code)
+        else {
             print(Constants.Errors.failedRequest)
             return
         }
         
-        let task = URLSession.shared.data(for: request) { result in
+        let task = URLSession.shared.data(for: request) {[weak self] result in
             switch result {
             case .success(let data):
                 do {
@@ -28,13 +51,16 @@ final class OAuth2Service {
                 print(Constants.Errors.failedFetchData)
                 completion(.failure(error))
             }
+            
+            self?.task = nil
+            self?.lastCode = nil
         }
         
+        self.task = task
         task.resume()
     }
     
     private func makeOAuthRequest(code: String) -> URLRequest? {
-        
         guard let url = Constants.API.defaultBaseURL, var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
             print(Constants.Errors.failedURL)
             return nil

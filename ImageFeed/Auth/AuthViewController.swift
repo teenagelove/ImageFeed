@@ -86,19 +86,18 @@ final class AuthViewController: UIViewController {
 
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ webViewViewController: WebViewViewController, didAuthenticateWithCode code: String) {
-        webViewViewController.dismiss(animated: true)
-        
-       ProgressHUD.animate()
+        UIBlockingProgressHUD.show()
         
         OAuth2Service.shared.fetchOAuthToken(code: code) { [weak self] result in
             guard let self else { return }
             
-            ProgressHUD.dismiss()
+            UIBlockingProgressHUD.dismiss()
             
             switch result {
                 // TODO: - Не забыть про токен (let token)
             case .success:
-                delegate?.didAuthenticate(self)
+                webViewViewController.dismiss(animated: true)
+                self.delegate?.didAuthenticate(self)
             case .failure(let error):
                 print("\(Constants.Errors.failedFetchToken) - \(error)")
             }
