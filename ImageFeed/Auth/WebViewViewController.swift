@@ -141,7 +141,6 @@ extension WebViewViewController: WKNavigationDelegate {
             let items = urlComponents.queryItems,
             let codeItem = items.first(where: { $0.name == "code" })
         else {
-            print(Constants.Errors.failedGetCode)
             return nil
         }
         return codeItem.value
