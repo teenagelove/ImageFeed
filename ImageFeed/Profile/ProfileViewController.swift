@@ -1,6 +1,9 @@
 import UIKit
 
 final class ProfileViewController: UIViewController {
+    // MARK: - Private Properties
+    private let profileService = ProfileService.shared
+    
     // MARK: - UI Components
     private lazy var avatarImageView: UIImageView = {
         let imageView = UIImageView()
@@ -44,19 +47,34 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        updateProfileDetails()
         setupConstraints()
     }
-    
+}
+
+private extension ProfileViewController {
     // MARK: - Setup Methods
-    private func setupUI() {
+    func setupUI() {
         [avatarImageView, backButton, nameLabel, loginNameLabel, descriptionLabel].forEach{ subview in
             subview.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(subview)
         }
     }
     
+    // MARK: - Update Methods
+    func updateProfileDetails() {
+        guard let profile = profileService.profile else {
+            print(Constants.Errors.failedFetchProfile)
+            return
+        }
+        
+        nameLabel.text = profile.name
+        loginNameLabel.text = profile.loginName
+        descriptionLabel.text = profile.bio
+    }
+    
     // MARK: - Layout
-    private func setupConstraints() {
+    func setupConstraints() {
         NSLayoutConstraint.activate([
             avatarImageView.heightAnchor.constraint(equalToConstant: 70),
             avatarImageView.widthAnchor.constraint(equalToConstant: 70),
@@ -79,7 +97,7 @@ final class ProfileViewController: UIViewController {
     }
     
     // MARK: - Actions
-    @objc private func didTapBackButton() {
+    @objc func didTapBackButton() {
         // TODO: - Добавить функцию выхода из профиля.
     }
 }

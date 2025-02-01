@@ -1,8 +1,5 @@
 import Foundation
 
-private enum AuthServiceError: Error {
-    case invalidRequest
-}
 
 final class OAuth2Service {
     // MARK: - Singleton
@@ -20,7 +17,7 @@ final class OAuth2Service {
         assert(Thread.isMainThread)
         
         guard lastCode != code else {
-            completion(.failure(AuthServiceError.invalidRequest))
+            completion(.failure(Constants.NetworkError.invalidRequest))
             return
         }
         
@@ -32,23 +29,22 @@ final class OAuth2Service {
             let request = makeOAuthRequest(code: code)
         else {
             print(Constants.Errors.failedRequest)
+            completion(.failure(Constants.NetworkError.invalidRequest))
             return
         }
         
-        let task = URLSession.shared.data(for: request) {[weak self] result in
+        let task = urlSession.data(for: request) {[weak self] result in
             switch result {
             case .success(let data):
                 do {
                     let response = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
-                    OAuth2TokenStorage.shared.token = response.accessToken
                     completion(.success(response.accessToken))
                 } catch {
                     print(Constants.Errors.failedDecode)
                     completion(.failure(error))
                 }
             case .failure(let error):
-                print(error)
-                print(Constants.Errors.failedFetchData)
+                print("\(Constants.Errors.failedFetchData)\n\(error.localizedDescription)")
                 completion(.failure(error))
             }
             

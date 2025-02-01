@@ -19,6 +19,7 @@ enum Constants {
         static let failedFetchToken = "Error fetching token"
         static let failedWindow = "Invalid window configuration"
         static let failedStoryboard = "Invalid storyboard configuration"
+        static let failedFetchProfile = "Failed to fetch profile"
     }
 
     enum Images {
@@ -66,10 +67,18 @@ enum Constants {
         static let redirectURI = "urn:ietf:wg:oauth:2.0:oob"
         static let accessScope = "public+read_user+write_likes"
         static let defaultBaseURL: URL? = URL(string: "https://unsplash.com")
+        static let baseAPIUrl = "https://api.unsplash.com"
         static let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
         static let oauthPath = "/oauth/authorize/native"
         static let tokenPath = "/oauth/token"
+        static let mePath = "/me"
         static let authorizationCodeString = "authorization_code"
+        static let authorizationHeader = "Authorization"
+        static let bearer = "Bearer "
+    }
+    
+    enum NetworkError: Error {
+        case invalidRequest
     }
     
     enum Titles {

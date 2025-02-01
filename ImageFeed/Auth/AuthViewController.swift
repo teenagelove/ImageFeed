@@ -5,6 +5,10 @@ final class AuthViewController: UIViewController {
     // MARK: - Properties
     weak var delegate: AuthViewControllerDelegate?
     
+    // MARK: - Private Properties
+    private let storage = OAuth2TokenStorage.shared
+    private let oauthService = OAuth2Service.shared
+    
     // MARK: - UI Components
     private lazy var logoView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: Constants.Images.logoUnsplash))
@@ -87,24 +91,29 @@ final class AuthViewController: UIViewController {
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ webViewViewController: WebViewViewController, didAuthenticateWithCode code: String) {
         navigationController?.popViewController(animated: true)
+        fetchOAuthToken(code: code)
+    }
+ 
+    // TODO: Подумать над надобностью
+//    func webViewViewControllerDidCancel(_ webViewViewController: WebViewViewController) {
+//        navigationController?.popViewController(animated: true)
+//    }
+    
+    private func fetchOAuthToken(code: String) {
         UIBlockingProgressHUD.show()
         
-        OAuth2Service.shared.fetchOAuthToken(code: code) { [weak self] result in
-            guard let self else { return }
-            
+        oauthService.fetchOAuthToken(code: code) { [weak self] result in
             UIBlockingProgressHUD.dismiss()
             
+            guard let self else { return }
+            
             switch result {
-                // TODO: - Не забыть про токен (let token)
-            case .success:
+            case .success(let token):
+                storage.token = token
                 self.delegate?.didAuthenticate(self)
             case .failure(let error):
                 print("\(Constants.Errors.failedFetchToken) - \(error)")
             }
         }
-    }
-    
-    func webViewViewControllerDidCancel(_ webViewViewController: WebViewViewController) {
-        navigationController?.popViewController(animated: true)
     }
 }

@@ -2,6 +2,10 @@ import UIKit
 
 
 final class SplashViewController: UIViewController {
+    // MARK: - Private Properties
+    private let storage = OAuth2TokenStorage.shared
+    private let profileService = ProfileService.shared
+    
     // MARK: - UI Components
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: Constants.Images.logo))
@@ -60,11 +64,11 @@ extension SplashViewController {
     }
     
     private func checkToken() {
-        guard OAuth2TokenStorage.shared.token != nil else {
+        guard let token = storage.token else {
             performSegue(withIdentifier: Constants.Segues.authView, sender: nil)
             return
         }
-        switchToTabBarController()
+        fetchProfile(token: token)
     }
     
     private func switchToTabBarController() {
@@ -86,7 +90,32 @@ extension SplashViewController {
 // MARK: - AuthViewControllerDelegate
 extension SplashViewController: AuthViewControllerDelegate {
     func didAuthenticate(_ authViewController: AuthViewController) {
-        authViewController.dismiss(animated: true)
-        switchToTabBarController()
+        navigationController?.popViewController(animated: true)
+        
+        guard let token = storage.token else {
+            print(Constants.Errors.failedFetchToken)
+            return
+        }
+        
+        fetchProfile(token: token)
+    }
+    
+    private func fetchProfile(token: String) {
+        UIBlockingProgressHUD.show()
+        
+        profileService.fetchProfile(token: token) { [weak self] result in
+            UIBlockingProgressHUD.dismiss()
+            
+            guard let self else { return }
+            
+            switch result {
+            // TODO: let profile: Profile
+            case .success:
+                self.switchToTabBarController()
+            case .failure(let error):
+                print("\(Constants.Errors.failedFetchProfile)\n\(error.localizedDescription)")
+                break
+            }
+        }
     }
 }
