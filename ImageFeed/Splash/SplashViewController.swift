@@ -90,7 +90,9 @@ extension SplashViewController {
 // MARK: - AuthViewControllerDelegate
 extension SplashViewController: AuthViewControllerDelegate {
     func didAuthenticate(_ authViewController: AuthViewController) {
-        navigationController?.popViewController(animated: true)
+//        TODO: Пока убрал закрытие вьюхи, чтобы не было промигивания экранов.
+//        При установке рут контроллера, стек все равно сбросится
+//        authViewController.dismiss(animated: true)
         
         guard let token = storage.token else {
             print(Constants.Errors.failedFetchToken)
@@ -101,7 +103,8 @@ extension SplashViewController: AuthViewControllerDelegate {
     }
     
     private func fetchProfile(token: String) {
-        UIBlockingProgressHUD.show()
+//        TODO: Здесь пока не включаем вейтер, чтобы он не вызывался два раза
+//        UIBlockingProgressHUD.show()
         
         profileService.fetchProfile(token: token) { [weak self] result in
             UIBlockingProgressHUD.dismiss()

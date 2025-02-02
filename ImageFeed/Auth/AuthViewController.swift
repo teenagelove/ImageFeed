@@ -103,7 +103,8 @@ extension AuthViewController: WebViewViewControllerDelegate {
         UIBlockingProgressHUD.show()
         
         oauthService.fetchOAuthToken(code: code) { [weak self] result in
-            UIBlockingProgressHUD.dismiss()
+//            TODO: Здесь пока не снимаем вейтер, чтобы он не вызывался два раза
+//            UIBlockingProgressHUD.dismiss()
             
             guard let self else { return }
             
@@ -112,7 +113,9 @@ extension AuthViewController: WebViewViewControllerDelegate {
                 storage.token = token
                 self.delegate?.didAuthenticate(self)
             case .failure(let error):
+                UIBlockingProgressHUD.dismiss()
                 print("\(Constants.Errors.failedFetchToken) - \(error)")
+                break
             }
         }
     }
