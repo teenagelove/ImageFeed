@@ -17,9 +17,11 @@ enum Constants {
         static let failedDecode = "Failed to decode JSON"
         static let failedFetchData = "Failed to fetch data"
         static let failedFetchToken = "Error fetching token"
+        static let failedGetToken = "Failed to get token"
         static let failedWindow = "Invalid window configuration"
         static let failedStoryboard = "Invalid storyboard configuration"
         static let failedFetchProfile = "Failed to fetch profile"
+        static let failedFetchProfileImage = "Failed to fetch profile image"
     }
 
     enum Images {
@@ -72,6 +74,7 @@ enum Constants {
         static let oauthPath = "/oauth/authorize/native"
         static let tokenPath = "/oauth/token"
         static let mePath = "/me"
+        static let usersPath = "/users"
         static let authorizationCodeString = "authorization_code"
         static let authorizationHeader = "Authorization"
         static let bearer = "Bearer "

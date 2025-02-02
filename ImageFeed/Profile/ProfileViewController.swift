@@ -3,6 +3,8 @@ import UIKit
 final class ProfileViewController: UIViewController {
     // MARK: - Private Properties
     private let profileService = ProfileService.shared
+    private let profileImageService = ProfileImageService.shared
+    private var profileImageServiceObserver: NSObjectProtocol?
     
     // MARK: - UI Components
     private lazy var avatarImageView: UIImageView = {
@@ -49,6 +51,8 @@ final class ProfileViewController: UIViewController {
         setupUI()
         updateProfileDetails()
         setupConstraints()
+        setupObservers()
+        updateAvatar()
     }
 }
 
@@ -58,6 +62,16 @@ private extension ProfileViewController {
         [avatarImageView, backButton, nameLabel, loginNameLabel, descriptionLabel].forEach{ subview in
             subview.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(subview)
+        }
+    }
+    
+    func setupObservers() {
+        profileImageServiceObserver = NotificationCenter.default.addObserver(
+            forName: ProfileImageService.didChangeNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            self?.updateAvatar()
         }
     }
     
@@ -71,6 +85,13 @@ private extension ProfileViewController {
         nameLabel.text = profile.name
         loginNameLabel.text = profile.loginName
         descriptionLabel.text = profile.bio
+    }
+    
+    func updateAvatar() {
+        guard
+            let profileImageURL = profileImageService.avatarURL,
+            let url = URL(string: profileImageURL)
+        else { return }
     }
     
     // MARK: - Layout

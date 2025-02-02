@@ -5,6 +5,7 @@ final class SplashViewController: UIViewController {
     // MARK: - Private Properties
     private let storage = OAuth2TokenStorage.shared
     private let profileService = ProfileService.shared
+    private let profileImageService = ProfileImageService.shared
     
     // MARK: - UI Components
     private lazy var imageView: UIImageView = {
@@ -90,12 +91,12 @@ extension SplashViewController {
 // MARK: - AuthViewControllerDelegate
 extension SplashViewController: AuthViewControllerDelegate {
     func didAuthenticate(_ authViewController: AuthViewController) {
-//        TODO: Пока убрал закрытие вьюхи, чтобы не было промигивания экранов.
-//        При установке рут контроллера, стек все равно сбросится
-//        authViewController.dismiss(animated: true)
+        //        TODO: Пока убрал закрытие вьюхи, чтобы не было промигивания экранов.
+        //        При установке рут контроллера, стек все равно сбросится
+        //        authViewController.dismiss(animated: true)
         
         guard let token = storage.token else {
-            print(Constants.Errors.failedFetchToken)
+            print(Constants.Errors.failedGetToken)
             return
         }
         
@@ -103,8 +104,8 @@ extension SplashViewController: AuthViewControllerDelegate {
     }
     
     private func fetchProfile(token: String) {
-//        TODO: Здесь пока не включаем вейтер, чтобы он не вызывался два раза
-//        UIBlockingProgressHUD.show()
+        //        TODO: Здесь пока не включаем вейтер, чтобы он не вызывался два раза
+        //        UIBlockingProgressHUD.show()
         
         profileService.fetchProfile(token: token) { [weak self] result in
             UIBlockingProgressHUD.dismiss()
@@ -112,12 +113,21 @@ extension SplashViewController: AuthViewControllerDelegate {
             guard let self else { return }
             
             switch result {
-            // TODO: let profile: Profile
-            case .success:
+                // TODO: let profile: Profile
+            case .success(let profile):
+                self.fetchProfileImage(username: profile.username)
                 self.switchToTabBarController()
             case .failure(let error):
                 print("\(Constants.Errors.failedFetchProfile)\n\(error.localizedDescription)")
                 break
+            }
+        }
+    }
+    
+    private func fetchProfileImage(username: String) {
+        profileImageService.fetchProfileImageURL(username: username) { result in
+            if case .failure(let error) = result {
+                print("\(Constants.Errors.failedFetchProfileImage)\n\(error.localizedDescription)")
             }
         }
     }
