@@ -24,18 +24,12 @@ final class ProfileService {
             return
         }
         
-        let task = urlSession.data(for: request) {[weak self] result in
+        let task = urlSession.objectTask(for: request) {[weak self] (result: Result<ProfileResult, Error>) in
             switch result {
-            case .success(let data):
-                do {
-                    let response = try JSONDecoder().decode(ProfileResult.self, from: data)
+            case .success(let response):
                     let newProfile = Profile(from: response)
                     self?.profile = newProfile
                     completion(.success(newProfile))
-                } catch {
-                    print(Constants.Errors.failedDecode)
-                    completion(.failure(error))
-                }
             case .failure(let error):
                 print("\(Constants.Errors.failedFetchData)\n\(error.localizedDescription)")
                 completion(.failure(error))

@@ -22,6 +22,8 @@ enum Constants {
         static let failedStoryboard = "Invalid storyboard configuration"
         static let failedFetchProfile = "Failed to fetch profile"
         static let failedFetchProfileImage = "Failed to fetch profile image"
+        static let failedEnter = "Failed to enter the system"
+        static let somethingWrong = "Something went wrong"
     }
 
     enum Images {

@@ -33,16 +33,10 @@ final class OAuth2Service {
             return
         }
         
-        let task = urlSession.data(for: request) {[weak self] result in
+       let task = urlSession.objectTask(for: request) {[weak self] (result: Result<OAuthTokenResponseBody, Error>) in
             switch result {
-            case .success(let data):
-                do {
-                    let response = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
-                    completion(.success(response.accessToken))
-                } catch {
-                    print(Constants.Errors.failedDecode)
-                    completion(.failure(error))
-                }
+            case .success(let response):
+                completion(.success(response.accessToken))
             case .failure(let error):
                 print("\(Constants.Errors.failedFetchData)\n\(error.localizedDescription)")
                 completion(.failure(error))
@@ -51,6 +45,7 @@ final class OAuth2Service {
             self?.task = nil
             self?.lastCode = nil
         }
+        
         
         self.task = task
         task.resume()

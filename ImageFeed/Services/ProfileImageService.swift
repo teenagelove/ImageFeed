@@ -28,23 +28,17 @@ final class ProfileImageService {
             return
         }
         
-        let task = urlSession.data(for: request) {[weak self] result in
+        let task = urlSession.objectTask(for: request) {[weak self] (result: Result<UserResult, Error>) in
             switch result {
-            case .success(let data):
-                do {
-                    let response = try JSONDecoder().decode(UserResult.self, from: data)
-                    guard let profileImageURL = response.profileImage?.small else { return }
-                    self?.avatarURL = profileImageURL
-                    completion(.success(profileImageURL))
-                    NotificationCenter.default.post(
-                        name: Self.didChangeNotification,
-                        object: self,
-                        userInfo: ["URL": profileImageURL]
-                    )
-                } catch {
-                    print(Constants.Errors.failedDecode)
-                    completion(.failure(error))
-                }
+            case .success(let response):
+                guard let profileImageURL = response.profileImage?.small else { return }
+                self?.avatarURL = profileImageURL
+                completion(.success(profileImageURL))
+                NotificationCenter.default.post(
+                    name: Self.didChangeNotification,
+                    object: self,
+                    userInfo: ["URL": profileImageURL]
+                )
             case .failure(let error):
                 print("\(Constants.Errors.failedFetchData)\n\(error.localizedDescription)")
                 completion(.failure(error))
