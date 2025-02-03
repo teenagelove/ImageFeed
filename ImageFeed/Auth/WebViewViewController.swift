@@ -6,6 +6,9 @@ final class WebViewViewController: UIViewController {
     // MARK: - Properties
     weak var delegate: WebViewViewControllerDelegate?
     
+    // MARK: -Private Properties
+    private var estimatedProgressObservation: NSKeyValueObservation?
+    
     // MARK: - UI Components
     private lazy var webView: WKWebView = {
         let webView = WKWebView()
@@ -19,60 +22,31 @@ final class WebViewViewController: UIViewController {
         return progressView
     }()
     
-    // MARK: Lifecycle & KVO Handling
+    // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
         setupSubviews()
         setupWebView()
+        setupObservers()
         setupConstraints()
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        webView.addObserver(
-            self,
-            forKeyPath: #keyPath(WKWebView.estimatedProgress),
-            context: nil
-        )
-        updateProgressView()
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        webView.removeObserver(
-            self,
-            forKeyPath: #keyPath(WKWebView.estimatedProgress),
-            context: nil
-        )
-    }
-    
-    override func observeValue(
-        forKeyPath keyPath: String?,
-        of object: Any?,
-        change: [NSKeyValueChangeKey : Any]?,
-        context: UnsafeMutableRawPointer?
-    ) {
-        if keyPath == #keyPath(WKWebView.estimatedProgress) {
-            updateProgressView()
-        } else {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-        }
-    }
-    
-    // MARK: - Setup Methods
-    private func setupView() {
+}
+
+// MARK: - Setup & Update Methods
+private extension WebViewViewController {
+    func setupView() {
         view.backgroundColor = .white
     }
     
-    private func setupSubviews() {
+    func setupSubviews() {
         [webView, progressView].forEach{ subViews in
             subViews.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(subViews)
         }
     }
     
-    private func setupWebView() {
+    func setupWebView() {
         webView.navigationDelegate = self
         
         guard var urlComponents = URLComponents(string: Constants.API.unsplashAuthorizeURLString) else {
@@ -96,7 +70,13 @@ final class WebViewViewController: UIViewController {
         webView.load(request)
     }
     
-    private func setupConstraints() {
+    func setupObservers() {
+        estimatedProgressObservation = webView.observe(\.estimatedProgress) {[weak self] _,_ in
+            self?.updateProgressView()
+        }
+    }
+    
+    func setupConstraints() {
         NSLayoutConstraint.activate([
             webView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             webView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -108,8 +88,7 @@ final class WebViewViewController: UIViewController {
         ])
     }
     
-    // MARK: -  Updates UI
-    private func updateProgressView() {
+    func updateProgressView() {
         progressView.progress = Float(webView.estimatedProgress)
         progressView.isHidden = fabs(webView.estimatedProgress - 1) <= 0.0001
     }
