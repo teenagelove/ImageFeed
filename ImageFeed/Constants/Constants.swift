@@ -45,8 +45,6 @@ enum Constants {
     
     enum Segues {
         static let singleImage = "ShowSingleImage"
-        static let webView = "ShowWebView"
-        static let authView = "ShowAuthView"
         static let tableView = "ShowTableView"
     }
     

@@ -49,41 +49,35 @@ final class SplashViewController: UIViewController {
 }
 
 
-extension SplashViewController {
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == Constants.Segues.authView {
-            guard
-                let navigationController = segue.destination as? UINavigationController,
-                let authViewController = navigationController.viewControllers.first as? AuthViewController
-            else {
-                assertionFailure(Constants.Errors.failedSegue)
-                return
-            }
-            
-            authViewController.delegate = self
-        } else { super.prepare(for: segue, sender: sender) }
-    }
-    
-    private func checkToken() {
+private extension SplashViewController {
+    func checkToken() {
         guard let token = storage.token else {
-            performSegue(withIdentifier: Constants.Segues.authView, sender: nil)
+            navigateToAuthView()
             return
         }
+        
         fetchProfile(token: token)
     }
     
-    private func switchToTabBarController() {
+    func navigateToAuthView() {
+        let authViewController = AuthViewController()
+        authViewController.delegate = self
+        let navigationController = UINavigationController(rootViewController: authViewController)
+        navigationController.modalPresentationStyle = .fullScreen
+        present(navigationController, animated: true)
+    }
+    
+    func switchToTabBarController() {
         guard let window = UIApplication.shared.windows.first else {
             assertionFailure(Constants.Errors.failedWindow)
             return
         }
         
         guard let tabBarController = UIStoryboard(name: "Main",bundle: nil)
-            .instantiateViewController(withIdentifier: Constants.Storyboards.tabBar) as? UITabBarController else {
-            assertionFailure(Constants.Errors.failedStoryboard)
-            return
-        }
-        
+                    .instantiateViewController(withIdentifier: Constants.Storyboards.tabBar) as? UITabBarController else {
+                    assertionFailure(Constants.Errors.failedStoryboard)
+                    return
+                }
         window.rootViewController = tabBarController
     }
 }
