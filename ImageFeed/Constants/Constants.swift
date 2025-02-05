@@ -35,6 +35,7 @@ enum Constants {
         static let navBackButton = "nav_back_button"
         static let logo = "Logo"
         static let stubProfile = "stub_profile"
+        static let activeProfile = "tab_profile_active"
     }
 
     enum UI {

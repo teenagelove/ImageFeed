@@ -60,10 +60,15 @@ final class ProfileViewController: UIViewController {
 private extension ProfileViewController {
     // MARK: - Setup Methods
     func setupUI() {
+        setupMainView()
         [avatarImageView, backButton, nameLabel, loginNameLabel, descriptionLabel].forEach{ subview in
             subview.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(subview)
         }
+    }
+    
+    func setupMainView() {
+        view.backgroundColor = .ypBlack
     }
     
     func setupObservers() {
