@@ -2,7 +2,7 @@ struct UserResult: Decodable {
     let profileImage: profileImage?
     
     struct profileImage: Decodable {
-        let small: String?
+        let medium: String?
     }
     
     private enum CodingKeys: String, CodingKey {

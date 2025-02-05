@@ -31,7 +31,7 @@ final class ProfileImageService {
         let task = urlSession.objectTask(for: request) {[weak self] (result: Result<UserResult, Error>) in
             switch result {
             case .success(let response):
-                guard let profileImageURL = response.profileImage?.small else { return }
+                guard let profileImageURL = response.profileImage?.medium else { return }
                 self?.avatarURL = profileImageURL
                 completion(.success(profileImageURL))
                 NotificationCenter.default.post(

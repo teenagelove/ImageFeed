@@ -11,7 +11,6 @@ final class ProfileViewController: UIViewController {
     // MARK: - UI Components
     private lazy var avatarImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: Constants.Images.stubPhoto)
         return imageView
     }()
     
