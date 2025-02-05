@@ -1,4 +1,6 @@
 import UIKit
+import Kingfisher
+
 
 final class ProfileViewController: UIViewController {
     // MARK: - Private Properties
@@ -90,8 +92,12 @@ private extension ProfileViewController {
     func updateAvatar() {
         guard
             let profileImageURL = profileImageService.avatarURL,
+            let stubProfile = UIImage(named: Constants.Images.stubProfile),
             let url = URL(string: profileImageURL)
         else { return }
+        
+        avatarImageView.kf.indicatorType = .activity
+        avatarImageView.kf.setImage(with: url, placeholder: stubProfile)
     }
     
     // MARK: - Layout

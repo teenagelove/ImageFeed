@@ -34,6 +34,7 @@ enum Constants {
         static let logoUnsplash = "Logo_of_Unsplash"
         static let navBackButton = "nav_back_button"
         static let logo = "Logo"
+        static let stubProfile = "stub_profile"
     }
 
     enum UI {
