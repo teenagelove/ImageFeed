@@ -23,7 +23,6 @@ final class ProfileViewController: UIViewController {
     
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
-        label.text = Constants.MockText.name
         label.font = Constants.Fonts.header
         label.textColor = .ypWhite
         return label
@@ -31,7 +30,6 @@ final class ProfileViewController: UIViewController {
     
     private lazy var loginNameLabel: UILabel = {
         let label = UILabel()
-        label.text = Constants.MockText.loginName
         label.font = Constants.Fonts.regular
         label.textColor = .ypGray
         return label
@@ -39,7 +37,6 @@ final class ProfileViewController: UIViewController {
     
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
-        label.text = Constants.MockText.description
         label.font = Constants.Fonts.regular
         label.textColor = .ypWhite
         label.numberOfLines = 0

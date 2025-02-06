@@ -1,8 +1,17 @@
 import UIKit
 
 final class ImagesListViewController: UIViewController {
-    // MARK: - @IBOutlets
-    @IBOutlet private var tableView: UITableView!
+    // MARK: - UI Components
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.backgroundColor = .ypBlack
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.contentInset = Constants.UI.tableViewContentInsets
+        tableView.separatorStyle = .none
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        return tableView
+    }()
     
     // MARK: - Private properties
     private let photosName: [String] = Array(0..<20).map{ "\($0)" }
@@ -18,13 +27,34 @@ final class ImagesListViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        tableView.contentInset = Constants.UI.tableViewContentInsets
+        setupUI()
     }
 }
 
+// MARK: - Setup Methods
 private extension ImagesListViewController {
-    // MARK: - Private Methods
+    func setupUI() {
+        view.backgroundColor = .ypBlack
+        setupSubviews()
+        setupConstraints()
+    }
+    
+    func setupSubviews() {
+        view.addSubview(tableView)
+    }
+    
+    func setupConstraints() {
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+           ])
+    }
+}
+
+// MARK: - Private Methods
+private extension ImagesListViewController {
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         guard let image = UIImage(named: photosName[indexPath.row]) else {
             print(Constants.Errors.failedImage)
@@ -76,13 +106,8 @@ extension ImagesListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let imagesListCell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for: indexPath) as? ImagesListCell else {
-            print(Constants.Errors.failedCast)
-            return UITableViewCell()
-        }
-        
-        configCell(for: imagesListCell, with: indexPath)
-        
-        return imagesListCell
+        let imageListCell = ImagesListCell(style: .default, reuseIdentifier: ImagesListCell.reuseIdentifier)
+        configCell(for: imageListCell, with: indexPath)
+        return imageListCell
     }
 }

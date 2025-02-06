@@ -38,6 +38,7 @@ enum Constants {
         static let activeProfile = "tab_profile_active"
         static let backButton = "Backward"
         static let sharingButton = "Sharing"
+        static let imagesList = "tab_editorial_active"
     }
 
     enum UI {
@@ -45,20 +46,9 @@ enum Constants {
         static let cellImageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
     }
     
-    enum Segues {
-        static let singleImage = "ShowSingleImage"
-        static let tableView = "ShowTableView"
-    }
-    
     enum ZoomScale {
         static let minimum = 0.25
         static let maximum = 1.25
-    }
-    
-    enum MockText {
-        static let name = "Екатерина Новикова"
-        static let loginName = "@ekaterina_nov"
-        static let description = "Hello, World!"
     }
     
     enum Fonts {
@@ -98,9 +88,5 @@ enum Constants {
     
     enum Storage {
         static let accessToken = "accessToken"
-    }
-    
-    enum Storyboards {
-        static let tabBar = "TabBarController"
     }
 }

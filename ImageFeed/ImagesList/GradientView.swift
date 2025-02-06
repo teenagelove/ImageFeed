@@ -6,6 +6,11 @@ final class GradientView: UIView {
     private let gradientLayer = CAGradientLayer()
     
     // MARK: - Inits
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupGradient()
+    }
+    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupGradient()
