@@ -21,24 +21,11 @@ final class ImagesListViewController: UIViewController {
         
         tableView.contentInset = Constants.UI.tableViewContentInsets
     }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == Constants.Segues.singleImage {
-            guard
-                let viewController = segue.destination as? SingleImageViewController,
-                let indexPath = sender as? IndexPath
-            else {
-                assertionFailure(Constants.Errors.failedSegue)
-                return
-            }
-            
-            let image = UIImage(named: photosName[indexPath.row])
-            viewController.image = image
-        } else {super.prepare(for: segue, sender: sender)}
-    }
-    
-    // MARK: - Private functions
-    private func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
+}
+
+private extension ImagesListViewController {
+    // MARK: - Private Methods
+    func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         guard let image = UIImage(named: photosName[indexPath.row]) else {
             print(Constants.Errors.failedImage)
             return
@@ -58,7 +45,7 @@ final class ImagesListViewController: UIViewController {
 // MARK: - UITableViewDelegate
 extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: Constants.Segues.singleImage, sender: indexPath)
+        navigateToSingleImage(at: indexPath)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -71,6 +58,14 @@ extension ImagesListViewController: UITableViewDelegate {
         let cellHeight = image.size.height * (imageViewWidth / image.size.width) + imageInsets.top + imageInsets.bottom
         
         return cellHeight
+    }
+    
+    private func navigateToSingleImage(at indexPath: IndexPath) {
+        let image = UIImage(named: photosName[indexPath.row])
+        let singleImageViewController = SingleImageViewController()
+        singleImageViewController.image = image
+        singleImageViewController.modalPresentationStyle = .fullScreen
+        present(singleImageViewController, animated: true)
     }
 }
 

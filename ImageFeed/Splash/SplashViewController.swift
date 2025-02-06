@@ -73,11 +73,7 @@ private extension SplashViewController {
             return
         }
         
-        guard let tabBarController = UIStoryboard(name: "Main",bundle: nil)
-                    .instantiateViewController(withIdentifier: Constants.Storyboards.tabBar) as? UITabBarController else {
-                    assertionFailure(Constants.Errors.failedStoryboard)
-                    return
-                }
+        let tabBarController = TabBarController()
         window.rootViewController = tabBarController
     }
 }

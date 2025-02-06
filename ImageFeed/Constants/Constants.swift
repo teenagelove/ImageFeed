@@ -36,6 +36,8 @@ enum Constants {
         static let logo = "Logo"
         static let stubProfile = "stub_profile"
         static let activeProfile = "tab_profile_active"
+        static let backButton = "Backward"
+        static let sharingButton = "Sharing"
     }
 
     enum UI {
@@ -49,7 +51,7 @@ enum Constants {
     }
     
     enum ZoomScale {
-        static let minimum = 0.1
+        static let minimum = 0.25
         static let maximum = 1.25
     }
     
