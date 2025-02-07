@@ -43,6 +43,7 @@ private extension ImagesListCell {
     // MARK: - Setup Methods
     func setupUI() {
         contentView.backgroundColor = .ypBlack
+        self.selectionStyle = .none
         self.backgroundColor = .ypBlack
         setupSubviews()
         setupConstraints()
