@@ -102,7 +102,8 @@ private extension AuthViewController {
     }
     
     func showAlert() {
-        AlertPresenter(viewController: self).showAlert(
+        AlertPresenter.showAlert(
+            vc: self,
             title: Constants.Errors.somethingWrong,
             message: Constants.Errors.failedEnter
         )

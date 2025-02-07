@@ -61,14 +61,15 @@ private extension ImagesListViewController {
             return
         }
         
-        cell.cellImage.image = image
-        cell.dateLabel.text = dateFormatter.string(from: currentDate)
-        
         let likeImage = indexPath.row.isEven
         ? UIImage(named: Constants.Images.activeLike)
         : UIImage(named: Constants.Images.noActiveLike)
         
-        cell.likeButton.setImage(likeImage, for: .normal)
+        cell.configCell(
+            cellImage: image,
+            likeImage: likeImage,
+            dateString: dateFormatter.string(from: currentDate)
+        )
     }
 }
 

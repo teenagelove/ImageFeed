@@ -5,7 +5,7 @@ final class ImagesListCell: UITableViewCell {
     static let reuseIdentifier = "ImagesListCell"
     
     // MARK: - UI Components
-    lazy var cellImage: UIImageView = {
+    private lazy var cellImage: UIImageView = {
         let cellImage = UIImageView()
         cellImage.contentMode = .scaleAspectFill
         cellImage.layer.masksToBounds = true
@@ -13,14 +13,14 @@ final class ImagesListCell: UITableViewCell {
         return cellImage
     }()
     
-    lazy var likeButton: UIButton = {
+    private lazy var likeButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(UIImage(named: Constants.Images.noActiveLike), for: .normal)
         button.addTarget(self, action: #selector(didTapLikeButton), for: .touchUpInside)
         return button
     }()
     
-    lazy var dateLabel: UILabel = {
+    private lazy var dateLabel: UILabel = {
         let label = UILabel()
         label.font = Constants.Fonts.regular
         label.textColor = .ypWhite
@@ -36,6 +36,12 @@ final class ImagesListCell: UITableViewCell {
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func configCell(cellImage: UIImage, likeImage: UIImage?, dateString: String) {
+        self.cellImage.image = cellImage
+        self.likeButton.setImage(likeImage, for: .normal)
+        self.dateLabel.text = dateString
     }
 }
 

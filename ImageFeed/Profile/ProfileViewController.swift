@@ -11,6 +11,7 @@ final class ProfileViewController: UIViewController {
     // MARK: - UI Components
     private lazy var avatarImageView: UIImageView = {
         let imageView = UIImageView()
+        imageView.layer.cornerRadius = 61
         return imageView
     }()
     
@@ -97,8 +98,9 @@ private extension ProfileViewController {
             let url = URL(string: profileImageURL)
         else { return }
         
+        let processor = RoundCornerImageProcessor(cornerRadius: 61)
         avatarImageView.kf.indicatorType = .activity
-        avatarImageView.kf.setImage(with: url, placeholder: stubProfile)
+        avatarImageView.kf.setImage(with: url, placeholder: stubProfile, options: [.processor(processor)])
     }
     
     // MARK: - Layout
