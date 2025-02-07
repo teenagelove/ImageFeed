@@ -2,39 +2,56 @@ import Foundation
 
 
 final class OAuth2Service {
+    // MARK: - Singleton
     static let shared = OAuth2Service()
     
+    // MARK: - Private properties
+    private let urlSession = URLSession.shared
+    private var task: URLSessionTask?
+    private var lastCode: String?
+    
+    // MARK: - Init
     private init() {}
     
     func fetchOAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void) {
-        guard let request = makeOAuthRequest(code: code) else {
-            print(Constants.Errors.failedRequest)
+        assert(Thread.isMainThread)
+        
+        guard lastCode != code else {
+            completion(.failure(Constants.NetworkError.invalidRequest))
             return
         }
         
-        let task = URLSession.shared.data(for: request) { result in
-            switch result {
-            case .success(let data):
-                do {
-                    let response = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
-                    OAuth2TokenStorage.shared.token = response.accessToken
-                    completion(.success(response.accessToken))
-                } catch {
-                    print(Constants.Errors.failedDecode)
-                    completion(.failure(error))
-                }
-            case .failure(let error):
-                print(error)
-                print(Constants.Errors.failedFetchData)
-                completion(.failure(error))
-            }
+        task?.cancel()
+        
+        lastCode = code
+        
+        guard
+            let request = makeOAuthRequest(code: code)
+        else {
+            print(Constants.Errors.failedRequest)
+            completion(.failure(Constants.NetworkError.invalidRequest))
+            return
         }
         
+       let task = urlSession.objectTask(for: request) {[weak self] (result: Result<OAuthTokenResponseBody, Error>) in
+            switch result {
+            case .success(let response):
+                completion(.success(response.accessToken))
+            case .failure(let error):
+                print("\(Constants.Errors.failedFetchData)\n\(error.localizedDescription)")
+                completion(.failure(error))
+            }
+            
+            self?.task = nil
+            self?.lastCode = nil
+        }
+        
+        
+        self.task = task
         task.resume()
     }
     
     private func makeOAuthRequest(code: String) -> URLRequest? {
-        
         guard let url = Constants.API.defaultBaseURL, var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
             print(Constants.Errors.failedURL)
             return nil

@@ -17,8 +17,13 @@ enum Constants {
         static let failedDecode = "Failed to decode JSON"
         static let failedFetchData = "Failed to fetch data"
         static let failedFetchToken = "Error fetching token"
+        static let failedGetToken = "Failed to get token"
         static let failedWindow = "Invalid window configuration"
         static let failedStoryboard = "Invalid storyboard configuration"
+        static let failedFetchProfile = "Failed to fetch profile"
+        static let failedFetchProfileImage = "Failed to fetch profile image"
+        static let failedEnter = "Failed to enter the system"
+        static let somethingWrong = "Something went wrong"
     }
 
     enum Images {
@@ -29,6 +34,11 @@ enum Constants {
         static let logoUnsplash = "Logo_of_Unsplash"
         static let navBackButton = "nav_back_button"
         static let logo = "Logo"
+        static let stubProfile = "stub_profile"
+        static let activeProfile = "tab_profile_active"
+        static let backButton = "Backward"
+        static let sharingButton = "Sharing"
+        static let imagesList = "tab_editorial_active"
     }
 
     enum UI {
@@ -36,22 +46,9 @@ enum Constants {
         static let cellImageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
     }
     
-    enum Segues {
-        static let singleImage = "ShowSingleImage"
-        static let webView = "ShowWebView"
-        static let authView = "ShowAuthView"
-        static let tableView = "ShowTableView"
-    }
-    
     enum ZoomScale {
-        static let minimum = 0.1
+        static let minimum = 0.25
         static let maximum = 1.25
-    }
-    
-    enum MockText {
-        static let name = "Екатерина Новикова"
-        static let loginName = "@ekaterina_nov"
-        static let description = "Hello, World!"
     }
     
     enum Fonts {
@@ -66,10 +63,19 @@ enum Constants {
         static let redirectURI = "urn:ietf:wg:oauth:2.0:oob"
         static let accessScope = "public+read_user+write_likes"
         static let defaultBaseURL: URL? = URL(string: "https://unsplash.com")
+        static let baseAPIUrl = "https://api.unsplash.com"
         static let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
         static let oauthPath = "/oauth/authorize/native"
         static let tokenPath = "/oauth/token"
+        static let mePath = "/me"
+        static let usersPath = "/users"
         static let authorizationCodeString = "authorization_code"
+        static let authorizationHeader = "Authorization"
+        static let bearer = "Bearer "
+    }
+    
+    enum NetworkError: Error {
+        case invalidRequest
     }
     
     enum Titles {
@@ -82,9 +88,5 @@ enum Constants {
     
     enum Storage {
         static let accessToken = "accessToken"
-    }
-    
-    enum Storyboards {
-        static let tabBar = "TabBarController"
     }
 }

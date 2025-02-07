@@ -1,10 +1,17 @@
 import UIKit
+import Kingfisher
+
 
 final class ProfileViewController: UIViewController {
+    // MARK: - Private Properties
+    private let profileService = ProfileService.shared
+    private let profileImageService = ProfileImageService.shared
+    private var profileImageServiceObserver: NSObjectProtocol?
+    
     // MARK: - UI Components
     private lazy var avatarImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: Constants.Images.stubPhoto)
+        imageView.layer.cornerRadius = 61
         return imageView
     }()
     
@@ -17,7 +24,6 @@ final class ProfileViewController: UIViewController {
     
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
-        label.text = Constants.MockText.name
         label.font = Constants.Fonts.header
         label.textColor = .ypWhite
         return label
@@ -25,7 +31,6 @@ final class ProfileViewController: UIViewController {
     
     private lazy var loginNameLabel: UILabel = {
         let label = UILabel()
-        label.text = Constants.MockText.loginName
         label.font = Constants.Fonts.regular
         label.textColor = .ypGray
         return label
@@ -33,7 +38,6 @@ final class ProfileViewController: UIViewController {
     
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
-        label.text = Constants.MockText.description
         label.font = Constants.Fonts.regular
         label.textColor = .ypWhite
         label.numberOfLines = 0
@@ -44,19 +48,63 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        updateProfileDetails()
         setupConstraints()
+        setupObservers()
+        updateAvatar()
     }
-    
+}
+
+private extension ProfileViewController {
     // MARK: - Setup Methods
-    private func setupUI() {
+    func setupUI() {
+        setupMainView()
         [avatarImageView, backButton, nameLabel, loginNameLabel, descriptionLabel].forEach{ subview in
             subview.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(subview)
         }
     }
     
+    func setupMainView() {
+        view.backgroundColor = .ypBlack
+    }
+    
+    func setupObservers() {
+        profileImageServiceObserver = NotificationCenter.default.addObserver(
+            forName: ProfileImageService.didChangeNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            self?.updateAvatar()
+        }
+    }
+    
+    // MARK: - Update Methods
+    func updateProfileDetails() {
+        guard let profile = profileService.profile else {
+            print(Constants.Errors.failedFetchProfile)
+            return
+        }
+        
+        nameLabel.text = profile.name
+        loginNameLabel.text = profile.loginName
+        descriptionLabel.text = profile.bio
+    }
+    
+    func updateAvatar() {
+        guard
+            let profileImageURL = profileImageService.avatarURL,
+            let stubProfile = UIImage(named: Constants.Images.stubProfile),
+            let url = URL(string: profileImageURL)
+        else { return }
+        
+        let processor = RoundCornerImageProcessor(cornerRadius: 61)
+        avatarImageView.kf.indicatorType = .activity
+        avatarImageView.kf.setImage(with: url, placeholder: stubProfile, options: [.processor(processor)])
+    }
+    
     // MARK: - Layout
-    private func setupConstraints() {
+    func setupConstraints() {
         NSLayoutConstraint.activate([
             avatarImageView.heightAnchor.constraint(equalToConstant: 70),
             avatarImageView.widthAnchor.constraint(equalToConstant: 70),
@@ -79,7 +127,7 @@ final class ProfileViewController: UIViewController {
     }
     
     // MARK: - Actions
-    @objc private func didTapBackButton() {
+    @objc func didTapBackButton() {
         // TODO: - Добавить функцию выхода из профиля.
     }
 }

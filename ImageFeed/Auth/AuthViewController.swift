@@ -5,6 +5,10 @@ final class AuthViewController: UIViewController {
     // MARK: - Properties
     weak var delegate: AuthViewControllerDelegate?
     
+    // MARK: - Private Properties
+    private let storage = OAuth2TokenStorage.shared
+    private let oauthService = OAuth2Service.shared
+    
     // MARK: - UI Components
     private lazy var logoView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: Constants.Images.logoUnsplash))
@@ -31,40 +35,30 @@ final class AuthViewController: UIViewController {
         setupBackButton()
         setupConstraints()
     }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-            if segue.identifier == Constants.Segues.webView {
-                guard let webViewController = segue.destination as? WebViewViewController
-                else {
-                    assertionFailure(Constants.Errors.failedSegue)
-                    return
-                }
-                webViewController.delegate = self
-            } else {
-                prepare(for: segue, sender: sender)
-            }
-    }
-    
+}
+
+// MARK: - Private Methods
+private extension AuthViewController {
     // MARK: - Setup Methods
-    private func setupView() {
+   func setupView() {
         view.backgroundColor = .ypBlack
     }
     
-    private func setupSubviews() {
+    func setupSubviews() {
         [logoView, loginButton].forEach{ subview in
             subview.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(subview)
         }
     }
     
-    private func setupBackButton() {
+    func setupBackButton() {
         navigationController?.navigationBar.backIndicatorImage = UIImage(named: Constants.Images.navBackButton)
         navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: Constants.Images.navBackButton)
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem?.tintColor = .ypBlack
     }
     
-    private func setupConstraints() {
+    func setupConstraints() {
         NSLayoutConstraint.activate([
             logoView.heightAnchor.constraint(equalToConstant: 60),
             logoView.widthAnchor.constraint(equalToConstant: 60),
@@ -78,29 +72,52 @@ final class AuthViewController: UIViewController {
     }
     
     // MARK: - Actions
-    @objc private func didTapLoginButton() {
-        performSegue(withIdentifier: Constants.Segues.webView, sender: nil)
+    @objc func didTapLoginButton() {
+        let webViewViewController = WebViewViewController()
+        webViewViewController.delegate = self
+        navigationController?.pushViewController(webViewViewController, animated: true)
     }
-}
-
-
-extension AuthViewController: WebViewViewControllerDelegate {
-    func webViewViewController(_ webViewViewController: WebViewViewController, didAuthenticateWithCode code: String) {
-        OAuth2Service.shared.fetchOAuthToken(code: code) { [weak self] result in
+    
+    // MARK: - Logic
+    func fetchOAuthToken(code: String) {
+        UIBlockingProgressHUD.show()
+        
+        oauthService.fetchOAuthToken(code: code) { [weak self] result in
+//            TODO: Здесь пока не снимаем вейтер, чтобы он не вызывался два раза
+//            UIBlockingProgressHUD.dismiss()
+            
             guard let self else { return }
             
             switch result {
-                // TODO: - Не забыть про токен (let token)
-            case .success:
-                webViewViewController.dismiss(animated: true)
-                delegate?.didAuthenticate(self)
+            case .success(let token):
+                storage.token = token
+                self.delegate?.didAuthenticate(self)
             case .failure(let error):
+                UIBlockingProgressHUD.dismiss()
+                showAlert()
                 print("\(Constants.Errors.failedFetchToken) - \(error)")
+                break
             }
         }
     }
     
-    func webViewViewControllerDidCancel(_ webViewViewController: WebViewViewController) {
-        webViewViewController.dismiss(animated: true)
+    func showAlert() {
+        AlertPresenter.showAlert(
+            vc: self,
+            title: Constants.Errors.somethingWrong,
+            message: Constants.Errors.failedEnter
+        )
     }
+}
+
+extension AuthViewController: WebViewViewControllerDelegate {
+    func webViewViewController(_ webViewViewController: WebViewViewController, didAuthenticateWithCode code: String) {
+        navigationController?.popViewController(animated: true)
+        fetchOAuthToken(code: code)
+    }
+ 
+    // TODO: Подумать над надобностью
+//    func webViewViewControllerDidCancel(_ webViewViewController: WebViewViewController) {
+//        navigationController?.popViewController(animated: true)
+//    }
 }

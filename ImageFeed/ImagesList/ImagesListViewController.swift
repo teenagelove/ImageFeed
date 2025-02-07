@@ -1,8 +1,17 @@
 import UIKit
 
 final class ImagesListViewController: UIViewController {
-    // MARK: - @IBOutlets
-    @IBOutlet private var tableView: UITableView!
+    // MARK: - UI Components
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.backgroundColor = .ypBlack
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.contentInset = Constants.UI.tableViewContentInsets
+        tableView.separatorStyle = .none
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        return tableView
+    }()
     
     // MARK: - Private properties
     private let photosName: [String] = Array(0..<20).map{ "\($0)" }
@@ -18,47 +27,56 @@ final class ImagesListViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        tableView.contentInset = Constants.UI.tableViewContentInsets
+        setupUI()
+    }
+}
+
+// MARK: - Setup Methods
+private extension ImagesListViewController {
+    func setupUI() {
+        view.backgroundColor = .ypBlack
+        setupSubviews()
+        setupConstraints()
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == Constants.Segues.singleImage {
-            guard
-                let viewController = segue.destination as? SingleImageViewController,
-                let indexPath = sender as? IndexPath
-            else {
-                assertionFailure(Constants.Errors.failedSegue)
-                return
-            }
-            
-            let image = UIImage(named: photosName[indexPath.row])
-            viewController.image = image
-        } else {super.prepare(for: segue, sender: sender)}
+    func setupSubviews() {
+        view.addSubview(tableView)
     }
     
-    // MARK: - Private functions
-    private func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
+    func setupConstraints() {
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+           ])
+    }
+}
+
+// MARK: - Private Methods
+private extension ImagesListViewController {
+    func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         guard let image = UIImage(named: photosName[indexPath.row]) else {
             print(Constants.Errors.failedImage)
             return
         }
         
-        cell.cellImage.image = image
-        cell.dateLabel.text = dateFormatter.string(from: currentDate)
-        
         let likeImage = indexPath.row.isEven
         ? UIImage(named: Constants.Images.activeLike)
         : UIImage(named: Constants.Images.noActiveLike)
         
-        cell.likeButton.setImage(likeImage, for: .normal)
+        cell.configCell(
+            cellImage: image,
+            likeImage: likeImage,
+            dateString: dateFormatter.string(from: currentDate)
+        )
     }
 }
 
 // MARK: - UITableViewDelegate
 extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: Constants.Segues.singleImage, sender: indexPath)
+        navigateToSingleImage(at: indexPath)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -72,6 +90,14 @@ extension ImagesListViewController: UITableViewDelegate {
         
         return cellHeight
     }
+    
+    private func navigateToSingleImage(at indexPath: IndexPath) {
+        let image = UIImage(named: photosName[indexPath.row])
+        let singleImageViewController = SingleImageViewController()
+        singleImageViewController.image = image
+        singleImageViewController.modalPresentationStyle = .fullScreen
+        present(singleImageViewController, animated: true)
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -81,13 +107,8 @@ extension ImagesListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let imagesListCell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for: indexPath) as? ImagesListCell else {
-            print(Constants.Errors.failedCast)
-            return UITableViewCell()
-        }
-        
-        configCell(for: imagesListCell, with: indexPath)
-        
-        return imagesListCell
+        let imageListCell = ImagesListCell(style: .default, reuseIdentifier: ImagesListCell.reuseIdentifier)
+        configCell(for: imageListCell, with: indexPath)
+        return imageListCell
     }
 }
