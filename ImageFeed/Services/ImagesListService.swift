@@ -1,57 +1,59 @@
 import Foundation
 
 
-final class ProfileImageService {
+final class ImagesListService {
     // MARK: - Singleton
-    static let shared = ProfileImageService()
+    static let shared = ImagesListService()
     
     // MARK: - Notification
-    static let didChangeNotification = Notification.Name(Constants.Notifications.profileImageServiceDidChange)
+    static let didChangeNotification = Notification.Name(Constants.Notifications.imagesListServiceDidChange)
     
-    // MARK: - Private Properties
-    private let urlSession = URLSession.shared
-    private let storage = OAuth2TokenStorage.shared
+    // MARK: - Properties
+    private(set) var photos: [Photo] = []
+    private var lastLoadedPage: Int?
     private var task: URLSessionTask?
-    private(set) var avatarURL: String?
+    private let storage = OAuth2TokenStorage.shared
     
     // MARK: - Init
     private init() {}
     
-    func fetchProfileImageURL(username: String, completion: @escaping (Result<String, Error>) -> Void ) {
-        assert(Thread.isMainThread)
-        
-        task?.cancel()
-        
-        guard let request = makeRequest(username: username) else {
-            print(Constants.Errors.failedRequest)
-            completion(.failure(Constants.NetworkError.invalidRequest))
+    func fetchPhotosNextPage() {
+        guard task == nil else {
+            print(Constants.Errors.taskIsRunning)
             return
         }
         
-        let task = urlSession.objectTask(for: request) {[weak self] (result: Result<UserResult, Error>) in
+        let nextPage = (lastLoadedPage ?? 0) + 1
+        
+        guard let request = makeRequest(page: nextPage) else {
+            print(Constants.Errors.failedRequest)
+            return
+        }
+        
+        let task = URLSession.shared.objectTask(for: request) { [weak self] (result: Result<[PhotoResult], Error>) in
+            guard let self else { return }
+            
             switch result {
             case .success(let response):
-                guard let profileImageURL = response.profileImage?.medium else { return }
-                self?.avatarURL = profileImageURL
-                completion(.success(profileImageURL))
+                self.lastLoadedPage = nextPage
+                self.photos.append(contentsOf: response.map(Photo.init))
                 NotificationCenter.default.post(
                     name: Self.didChangeNotification,
                     object: self,
-                    userInfo: ["URL": profileImageURL]
+                    userInfo: ["Photos": response]
                 )
             case .failure(let error):
                 print("\(Constants.Errors.failedFetchData)\n\(error.localizedDescription)")
-                completion(.failure(error))
             }
             
-            self?.task = nil
+            self.task = nil
         }
         
         self.task = task
         task.resume()
     }
     
-    private func makeRequest(username: String) -> URLRequest? {
+    private func makeRequest(page: Int) -> URLRequest? {
         guard
             var urlComponents = URLComponents(string: Constants.API.baseAPIUrl)
         else {
@@ -59,7 +61,11 @@ final class ProfileImageService {
             return nil
         }
         
-        urlComponents.path = Constants.API.usersPath + "/" + username
+        urlComponents.path = Constants.API.photosPath
+        urlComponents.queryItems = [
+            URLQueryItem(name: Constants.API.pageQuery, value: String(page)),
+            URLQueryItem(name: Constants.API.perPageQuery, value: Constants.API.perPageValue)
+        ]
         
         guard let url = urlComponents.url else {
             print(Constants.Errors.failedURL)

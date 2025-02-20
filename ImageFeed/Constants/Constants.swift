@@ -24,6 +24,7 @@ enum Constants {
         static let failedFetchProfileImage = "Failed to fetch profile image"
         static let failedEnter = "Failed to enter the system"
         static let somethingWrong = "Something went wrong"
+        static let taskIsRunning = "Task already is running"
     }
 
     enum Images {
@@ -69,9 +70,13 @@ enum Constants {
         static let tokenPath = "/oauth/token"
         static let mePath = "/me"
         static let usersPath = "/users"
+        static let photosPath = "/photos"
         static let authorizationCodeString = "authorization_code"
         static let authorizationHeader = "Authorization"
         static let bearer = "Bearer "
+        static let pageQuery = "page"
+        static let perPageQuery = "per_page"
+        static let perPageValue = "10"
     }
     
     enum NetworkError: Error {
@@ -88,5 +93,10 @@ enum Constants {
     
     enum Storage {
         static let accessToken = "accessToken"
+    }
+    
+    enum Notifications {
+        static let profileImageServiceDidChange = "ProfileImageServiceDidChange"
+        static let imagesListServiceDidChange = "ImagesListServiceDidChange"
     }
 }
