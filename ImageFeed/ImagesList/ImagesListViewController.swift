@@ -35,6 +35,7 @@ final class ImagesListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        UIBlockingProgressHUD.show()
     }
 }
 
@@ -147,6 +148,9 @@ extension ImagesListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row == 0 {
+            UIBlockingProgressHUD.dismiss()
+        }
         guard indexPath.row == photos.count - 1 else { return }
         imagesListService.fetchPhotosNextPage()
     }

@@ -2,13 +2,6 @@ import UIKit
 import Kingfisher
 
 final class SingleImageViewController: UIViewController {
-    // MARK: - Public properties
-    var image: UIImage? {
-        didSet {
-            configureImageView()
-        }
-    }
-    
     // MARK: - UI Components
     private lazy var imageView: UIImageView = {
         let view = UIImageView()
@@ -49,17 +42,14 @@ final class SingleImageViewController: UIViewController {
 // MARK: - Public Methods
 extension SingleImageViewController {
     func downloadImage(url: URL) {
-        UIBlockingProgressHUD.show()
-        KingfisherManager.shared.retrieveImage(with: url) { [weak self] result in
-            UIBlockingProgressHUD.dismiss()
-            switch result {
-            case .success(let imageResult):
-                DispatchQueue.main.async {
-                            self?.image = imageResult.image
-                        }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
+        imageView.kf.indicatorType = .activity
+        imageView.kf.setImage(
+            with: url,
+            placeholder: UIImage(
+                named: Constants.Images.unsplashLoader
+            )
+        ) { [weak self] _ in
+            self?.configureImageView()
         }
     }
 }
@@ -78,9 +68,8 @@ private extension SingleImageViewController {
     }
     
     func configureImageView() {
-        guard isViewLoaded, let image else { return }
+        guard isViewLoaded, let image = imageView.image else { return }
         
-        imageView.image = image
         imageView.frame.size = image.size
         rescaleAndCenterImageInScrollView(image: image)
     }
@@ -141,7 +130,7 @@ private extension SingleImageViewController {
     }
     
     @objc func didTapSharingButton() {
-        guard let image else { return }
+        guard let image = imageView.image else { return }
         
         let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         present(activityViewController, animated: true)
