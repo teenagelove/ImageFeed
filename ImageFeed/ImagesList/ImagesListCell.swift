@@ -1,4 +1,5 @@
 import UIKit
+import Kingfisher
 
 final class ImagesListCell: UITableViewCell {
     // MARK: - Public properties
@@ -43,8 +44,14 @@ final class ImagesListCell: UITableViewCell {
         cellImage.kf.cancelDownloadTask()
     }
     
-    func configCell(cellImage: UIImage, likeImage: UIImage?, dateString: String) {
-        self.cellImage.image = cellImage
+    func configCell(cellImageURL: URL, likeImage: UIImage?, dateString: String, completion: (() -> Void)? = nil) {
+        self.cellImage.kf.indicatorType = .activity
+        self.cellImage.kf.setImage(
+            with: cellImageURL,
+            placeholder: UIImage(named: Constants.Images.unsplashLoader)
+        ) { _ in
+            completion?()
+        }
         self.likeButton.setImage(likeImage, for: .normal)
         self.dateLabel.text = dateString
     }

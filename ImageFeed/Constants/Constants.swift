@@ -40,6 +40,7 @@ enum Constants {
         static let backButton = "Backward"
         static let sharingButton = "Sharing"
         static let imagesList = "tab_editorial_active"
+        static let unsplashLoader = "unsplash_loader"
     }
 
     enum UI {

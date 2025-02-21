@@ -1,4 +1,5 @@
 import UIKit
+import Kingfisher
 
 final class SingleImageViewController: UIViewController {
     // MARK: - Public properties
@@ -42,6 +43,24 @@ final class SingleImageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+    }
+}
+
+// MARK: - Public Methods
+extension SingleImageViewController {
+    func downloadImage(url: URL) {
+        UIBlockingProgressHUD.show()
+        KingfisherManager.shared.retrieveImage(with: url) { [weak self] result in
+            UIBlockingProgressHUD.dismiss()
+            switch result {
+            case .success(let imageResult):
+                DispatchQueue.main.async {
+                            self?.image = imageResult.image
+                        }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
 }
 
