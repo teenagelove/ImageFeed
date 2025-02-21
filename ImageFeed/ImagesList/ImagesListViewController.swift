@@ -114,7 +114,9 @@ extension ImagesListViewController: UITableViewDataSource {
         guard
         let imageListCell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for: indexPath) as? ImagesListCell
             
-        else { return UITableViewCell() }
+        else {
+            return ImagesListCell(style: .default, reuseIdentifier: ImagesListCell.reuseIdentifier)
+        }
             
         configCell(for: imageListCell, with: indexPath)
         return imageListCell
