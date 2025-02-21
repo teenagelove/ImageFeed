@@ -9,6 +9,10 @@ final class ImagesListViewController: UIViewController {
         tableView.delegate = self
         tableView.contentInset = Constants.UI.tableViewContentInsets
         tableView.separatorStyle = .none
+        tableView.register(
+            ImagesListCell.self,
+            forCellReuseIdentifier: ImagesListCell.reuseIdentifier
+        )
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
@@ -107,7 +111,11 @@ extension ImagesListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let imageListCell = ImagesListCell(style: .default, reuseIdentifier: ImagesListCell.reuseIdentifier)
+        guard
+        let imageListCell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for: indexPath) as? ImagesListCell
+            
+        else { return UITableViewCell() }
+            
         configCell(for: imageListCell, with: indexPath)
         return imageListCell
     }

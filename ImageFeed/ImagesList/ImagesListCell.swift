@@ -38,6 +38,11 @@ final class ImagesListCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        cellImage.kf.cancelDownloadTask()
+    }
+    
     func configCell(cellImage: UIImage, likeImage: UIImage?, dateString: String) {
         self.cellImage.image = cellImage
         self.likeButton.setImage(likeImage, for: .normal)
