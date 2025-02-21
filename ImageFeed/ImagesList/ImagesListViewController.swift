@@ -89,7 +89,7 @@ private extension ImagesListViewController {
         cell.configCell(
             cellImageURL: imageURL,
             likeImage: likeImage,
-            dateString: dateFormatter.string(from: currentDate)
+            dateString: dateFormatter.string(from: photos[indexPath.row].createdAt ?? currentDate)
         ) { [weak self] in
             self?.tableView.reloadRows(at: [indexPath], with: .automatic)
         }
