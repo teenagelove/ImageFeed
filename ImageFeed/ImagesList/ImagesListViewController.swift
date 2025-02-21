@@ -76,7 +76,7 @@ private extension ImagesListViewController {
 private extension ImagesListViewController {
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         guard
-            let imageURL = URL(string: photos[indexPath.row].thumbImageURL)
+            let imageURL = URL(string: photos[indexPath.row].smallImageURL)
         else {
             print(Constants.Errors.failedImage)
             return

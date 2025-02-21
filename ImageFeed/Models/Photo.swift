@@ -6,7 +6,7 @@ struct Photo {
     let size: CGSize
     let createdAt: Date?
     let welcomeDescription: String?
-    let thumbImageURL: String
+    let smallImageURL: String
     let largeImageURL: String
     let isLiked: Bool
     
@@ -21,8 +21,8 @@ struct Photo {
         }
         
         welcomeDescription = photoResult.description
-        thumbImageURL = photoResult.urls.thumb
-        largeImageURL = photoResult.urls.regular
+        smallImageURL = photoResult.urls.small
+        largeImageURL = photoResult.urls.full
         isLiked = photoResult.likedByUser
     }
 }
