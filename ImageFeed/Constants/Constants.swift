@@ -49,7 +49,7 @@ enum Constants {
     }
     
     enum ZoomScale {
-        static let minimum = 0.1
+        static let minimum = 0.05
         static let maximum = 1.25
     }
     

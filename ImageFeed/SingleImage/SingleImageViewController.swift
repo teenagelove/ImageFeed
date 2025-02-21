@@ -154,4 +154,12 @@ extension SingleImageViewController: UIScrollViewDelegate {
             right: offsetX
         )
     }
+    
+    func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
+        if scale == scrollView.minimumZoomScale {
+            UIView.animate(withDuration: 0.3, animations: { [weak self] in
+                self?.configureImageView()
+            })
+        }
+    }
 }
