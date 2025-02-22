@@ -177,7 +177,7 @@ extension ImagesListViewController: ImagesListCellDelegate {
             switch result {
             case .success:
                 self.photos = self.imagesListService.photos
-                cell.setIsLiked(isLike: photo.isLiked)
+                cell.setIsLiked(isLike: !photo.isLiked)
                 UIBlockingProgressHUD.dismiss()
             case .failure(let error):
                 print("\(Constants.Errors.failedToChangeLike)\n\(error.localizedDescription)")

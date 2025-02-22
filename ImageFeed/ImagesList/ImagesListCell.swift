@@ -19,6 +19,7 @@ final class ImagesListCell: UITableViewCell {
         cellImage.contentMode = .scaleAspectFill
         cellImage.layer.masksToBounds = true
         cellImage.layer.cornerRadius = 15
+        cellImage.backgroundColor = .ypGray
         return cellImage
     }()
     
