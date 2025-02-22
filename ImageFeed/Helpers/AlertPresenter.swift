@@ -35,11 +35,11 @@ final class AlertPresenter {
         alertController.addAction(okAction)
         
         if let handler {
-            let retryAction = UIAlertAction(title: "Retry", style: .default) { _ in
+            let secondAction = UIAlertAction(title: "Retry", style: .default) { _ in
                 handler()
             }
             
-            alertController.addAction(retryAction)
+            alertController.addAction(secondAction)
         }
         
         vc.present(alertController, animated: true)
