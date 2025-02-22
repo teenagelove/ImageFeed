@@ -25,6 +25,9 @@ enum Constants {
         static let failedEnter = "Failed to enter the system"
         static let somethingWrong = "Something went wrong"
         static let taskIsRunning = "Task already is running"
+        static let failedToChangeLike = "Failed to change like"
+        static let failedToFindPhoto = "Failed to find photo"
+        static let failedToLoadImage = "Failed to download image"
     }
 
     enum Images {
@@ -78,10 +81,13 @@ enum Constants {
         static let pageQuery = "page"
         static let perPageQuery = "per_page"
         static let perPageValue = "10"
+        static let post = "POST"
+        static let delete = "DELETE"
     }
     
     enum NetworkError: Error {
         case invalidRequest
+        case invalidData
     }
     
     enum Titles {

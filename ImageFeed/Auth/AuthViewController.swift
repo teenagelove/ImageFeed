@@ -94,19 +94,11 @@ private extension AuthViewController {
                 self.delegate?.didAuthenticate(self)
             case .failure(let error):
                 UIBlockingProgressHUD.dismiss()
-                showAlert()
+                AlertPresenter.showLoginAlert(vc: self)
                 print("\(Constants.Errors.failedFetchToken) - \(error)")
                 break
             }
         }
-    }
-    
-    func showAlert() {
-        AlertPresenter.showAlert(
-            vc: self,
-            title: Constants.Errors.somethingWrong,
-            message: Constants.Errors.failedEnter
-        )
     }
 }
 
@@ -115,9 +107,4 @@ extension AuthViewController: WebViewViewControllerDelegate {
         navigationController?.popViewController(animated: true)
         fetchOAuthToken(code: code)
     }
- 
-    // TODO: Подумать над надобностью
-//    func webViewViewControllerDidCancel(_ webViewViewController: WebViewViewController) {
-//        navigationController?.popViewController(animated: true)
-//    }
 }

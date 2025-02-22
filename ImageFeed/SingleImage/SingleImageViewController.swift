@@ -48,14 +48,19 @@ extension SingleImageViewController {
             placeholder: UIImage(
                 named: Constants.Images.unsplashLoader
             )
-        ) { [weak self] _ in
-            self?.configureImageView()
+        ) { [weak self] result in
+            switch result {
+            case .success(let response):
+                self?.rescaleAndCenterImageInScrollView(image: response.image)
+            case .failure:
+                self?.showError(url: url)
+            }
         }
     }
 }
 
+// MARK: - Setup Methods
 private extension SingleImageViewController {
-    // MARK: - Setup Methods
     func setupUI() {
         setupView()
         setupSubviews()
@@ -134,6 +139,15 @@ private extension SingleImageViewController {
         
         let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         present(activityViewController, animated: true)
+    }
+}
+
+// MARK: - Private Methods
+private extension SingleImageViewController {
+    func showError(url: URL) {
+        AlertPresenter.showLoadError(vc: self) { [weak self] in
+            self?.downloadImage(url: url)
+        }
     }
 }
 

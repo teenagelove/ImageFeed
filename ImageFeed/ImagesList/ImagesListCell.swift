@@ -1,9 +1,17 @@
 import UIKit
 import Kingfisher
 
+// MARK: - Delegate Protocol
+protocol ImagesListCellDelegate: AnyObject {
+    func imageListCellDidTapLike(_ cell: ImagesListCell)
+}
+
 final class ImagesListCell: UITableViewCell {
     // MARK: - Public properties
     static let reuseIdentifier = "ImagesListCell"
+    
+    // MARK: - Delegate
+    weak var delegate: ImagesListCellDelegate?
     
     // MARK: - UI Components
     private lazy var cellImage: UIImageView = {
@@ -18,6 +26,7 @@ final class ImagesListCell: UITableViewCell {
         let button = UIButton(type: .custom)
         button.setImage(UIImage(named: Constants.Images.noActiveLike), for: .normal)
         button.addTarget(self, action: #selector(didTapLikeButton), for: .touchUpInside)
+        button.setImage(UIImage(named: Constants.Images.noActiveLike), for: .normal)
         return button
     }()
     
@@ -44,7 +53,7 @@ final class ImagesListCell: UITableViewCell {
         cellImage.kf.cancelDownloadTask()
     }
     
-    func configCell(cellImageURL: URL, likeImage: UIImage?, dateString: String, completion: (() -> Void)? = nil) {
+    func configCell(cellImageURL: URL, isLiked: Bool, dateString: String, completion: (() -> Void)? = nil) {
         self.cellImage.kf.indicatorType = .activity
         self.cellImage.kf.setImage(
             with: cellImageURL,
@@ -52,8 +61,18 @@ final class ImagesListCell: UITableViewCell {
         ) { _ in
             completion?()
         }
-        self.likeButton.setImage(likeImage, for: .normal)
+        setIsLiked(isLike: isLiked)
         self.dateLabel.text = dateString
+    }
+}
+
+// MARK: - Public Methods
+extension ImagesListCell {
+    func setIsLiked(isLike: Bool) {
+        let image = isLike
+        ? UIImage(named: Constants.Images.activeLike)
+        : UIImage(named: Constants.Images.noActiveLike)
+        likeButton.setImage(image, for: .normal)
     }
 }
 
@@ -95,6 +114,6 @@ private extension ImagesListCell {
     
     // MARK: - Actions
     @objc func didTapLikeButton() {
-        print("Like button tapped")
+        delegate?.imageListCellDidTapLike(self)
     }
 }

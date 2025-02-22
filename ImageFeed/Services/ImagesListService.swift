@@ -53,6 +53,68 @@ final class ImagesListService {
         task.resume()
     }
     
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
+        guard let request = makeLikeRequest(id: photoId, isLike: isLike) else {
+            print(Constants.Errors.failedRequest)
+            return
+        }
+        
+        let task = URLSession.shared.data(for: request) { [weak self] result in
+            guard let self else { return }
+            
+            switch result {
+            case .success:
+                if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
+                    self.photos[index].isLiked.toggle()
+                    completion(.success(()))
+                } else {
+                    print(Constants.Errors.failedToFindPhoto)
+                    completion(.failure(Constants.NetworkError.invalidData))
+                }
+            case .failure(let error):
+                print("\(Constants.Errors.failedToChangeLike)\n\(error.localizedDescription)")
+                completion(.failure(error))
+            }
+            
+            self.task = nil
+        }
+        
+        self.task = task
+        task.resume()
+    }
+    
+    
+    private func makeLikeRequest(id: String, isLike: Bool) -> URLRequest? {
+        guard
+            var urlComponents = URLComponents(string: Constants.API.baseAPIUrl)
+        else {
+            print(Constants.Errors.failedRequest)
+            return nil
+        }
+        
+        urlComponents.path = Constants.API.photosPath + "/\(id)/like"
+        
+        guard let url = urlComponents.url else {
+            print(Constants.Errors.failedURL)
+            return nil
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = isLike ? Constants.API.post : Constants.API.delete
+        
+        guard let token = storage.token else {
+            print(Constants.Errors.failedGetToken)
+            return nil
+        }
+        
+        request.setValue(
+            Constants.API.bearer + token,
+            forHTTPHeaderField: Constants.API.authorizationHeader
+        )
+        
+        return request
+    }
+    
     private func makeRequest(page: Int) -> URLRequest? {
         guard
             var urlComponents = URLComponents(string: Constants.API.baseAPIUrl)

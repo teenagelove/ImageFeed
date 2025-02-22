@@ -1,5 +1,5 @@
 import UIKit
-
+import ProgressHUD
 
 final class ImagesListViewController: UIViewController {
     // MARK: - UI Components
@@ -82,13 +82,9 @@ private extension ImagesListViewController {
             return
         }
         
-        let likeImage = indexPath.row.isEven
-        ? UIImage(named: Constants.Images.activeLike)
-        : UIImage(named: Constants.Images.noActiveLike)
-        
         cell.configCell(
             cellImageURL: imageURL,
-            likeImage: likeImage,
+            isLiked: photos[indexPath.row].isLiked,
             dateString: dateFormatter.string(from: photos[indexPath.row].createdAt ?? currentDate)
         ) { [weak self] in
             self?.tableView.reloadRows(at: [indexPath], with: .automatic)
@@ -162,8 +158,32 @@ extension ImagesListViewController: UITableViewDataSource {
         else {
             return ImagesListCell(style: .default, reuseIdentifier: ImagesListCell.reuseIdentifier)
         }
-            
+        
+        imageListCell.delegate = self
         configCell(for: imageListCell, with: indexPath)
         return imageListCell
+    }
+}
+
+
+// MARK: - ImagesListCellDelegate
+extension ImagesListViewController: ImagesListCellDelegate {
+    func imageListCellDidTapLike(_ cell: ImagesListCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let photo = photos[indexPath.row]
+        UIBlockingProgressHUD.show()
+        imagesListService.changeLike(photoId: photo.id, isLike: !photo.isLiked) { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case .success:
+                self.photos = self.imagesListService.photos
+                cell.setIsLiked(isLike: photo.isLiked)
+                UIBlockingProgressHUD.dismiss()
+            case .failure(let error):
+                print("\(Constants.Errors.failedToChangeLike)\n\(error.localizedDescription)")
+                UIBlockingProgressHUD.dismiss()
+                AlertPresenter.showLikeAlert(vc: self)
+            }
+        }
     }
 }
