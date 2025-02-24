@@ -128,6 +128,9 @@ private extension ProfileViewController {
     
     // MARK: - Actions
     @objc func didTapBackButton() {
-        // TODO: - Добавить функцию выхода из профиля.
+        AlertPresenter.showLogoutWarning(vc: self) {
+            UIBlockingProgressHUD.show()
+            ProfileLogoutService.shared.logout()
+        }
     }
 }

@@ -17,6 +17,10 @@ final class ProfileImageService {
     // MARK: - Init
     private init() {}
     
+    static func clearProfileImage() {
+        shared.avatarURL = nil
+    }
+    
     func fetchProfileImageURL(username: String, completion: @escaping (Result<String, Error>) -> Void ) {
         assert(Thread.isMainThread)
         
@@ -50,8 +54,11 @@ final class ProfileImageService {
         self.task = task
         task.resume()
     }
-    
-    private func makeRequest(username: String) -> URLRequest? {
+}
+
+// MARK: - Private Methods
+private extension ProfileImageService {
+    func makeRequest(username: String) -> URLRequest? {
         guard
             var urlComponents = URLComponents(string: Constants.API.baseAPIUrl)
         else {

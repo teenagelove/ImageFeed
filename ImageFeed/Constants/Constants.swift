@@ -29,6 +29,15 @@ enum Constants {
         static let failedToFindPhoto = "Failed to find photo"
         static let failedToLoadImage = "Failed to download image"
     }
+    
+    enum Alert {
+        static let yes = "Yes"
+        static let cancel = "Cancel"
+        static let ok = "OK"
+        static let retry = "Retry"
+        static let byeMessage = "Bye, bye!"
+        static let sureMessage = "Are you sure?"
+    }
 
     enum Images {
         static let activeLike = "Active Like"

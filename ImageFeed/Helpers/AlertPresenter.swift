@@ -23,20 +23,41 @@ final class AlertPresenter {
             vc: vc,
             title: Constants.Errors.somethingWrong,
             message: Constants.Errors.failedToLoadImage,
-            handler: handler
+            rightHandler: handler
         )
     }
     
-    private static func showAlert(vc: UIViewController, title: String, message: String, handler: (() -> Void)? = nil) {
+    static func showLogoutWarning(vc: UIViewController, handler: @escaping () -> Void) {
+        showAlert(
+            vc: vc,
+            title: Constants.Alert.byeMessage,
+            message: Constants.Alert.sureMessage,
+            leftButton: Constants.Alert.yes,
+            rightButton: Constants.Alert.cancel,
+            leftHandler: handler
+        )
+    }
+    
+    private static func showAlert(
+        vc: UIViewController,
+        title: String,
+        message: String,
+        leftButton: String = Constants.Alert.ok,
+        rightButton: String? = Constants.Alert.retry,
+        leftHandler: (() -> Void)? = nil,
+        rightHandler: (() -> Void)? = nil
+    ) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
         
-        let okAction = UIAlertAction(title: "OK", style: .default)
+        let okAction = UIAlertAction(title: leftButton, style: .default) {_ in 
+            leftHandler?()
+        }
         alertController.addAction(okAction)
         
-        if let handler {
-            let secondAction = UIAlertAction(title: "Retry", style: .default) { _ in
-                handler()
+        if let rightButton {
+            let secondAction = UIAlertAction(title: rightButton, style: .default) { _ in
+                rightHandler?()
             }
             
             alertController.addAction(secondAction)

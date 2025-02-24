@@ -32,8 +32,14 @@ final class AuthViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         setupSubviews()
+        setupNavigationController()
         setupBackButton()
         setupConstraints()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        UIBlockingProgressHUD.dismiss()
     }
 }
 
@@ -56,6 +62,12 @@ private extension AuthViewController {
         navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: Constants.Images.navBackButton)
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem?.tintColor = .ypBlack
+    }
+    
+    func setupNavigationController() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground() // Делаем фон прозрачным
+        navigationController?.navigationBar.standardAppearance = appearance
     }
     
     func setupConstraints() {
