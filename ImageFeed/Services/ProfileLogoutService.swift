@@ -15,7 +15,7 @@ final class ProfileLogoutService {
         ProfileService.clearProfile()
         ProfileImageService.clearProfileImage()
         ImagesListService.clearImagesList()
-        switchToAuthView()
+        switchToSplashView()
     }
 }
 
@@ -32,13 +32,13 @@ private extension ProfileLogoutService {
         }
     }
     
-    func switchToAuthView() {
+    func switchToSplashView() {
         guard let window = UIApplication.shared.windows.first else {
             assertionFailure(Constants.Errors.failedWindow)
             return
         }
         
-        let authView = AuthViewController()
-        window.rootViewController = authView
+        let splashView = SplashViewController()
+        window.rootViewController = splashView
     }
 }

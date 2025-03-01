@@ -36,11 +36,6 @@ final class AuthViewController: UIViewController {
         setupBackButton()
         setupConstraints()
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        UIBlockingProgressHUD.dismiss()
-    }
 }
 
 // MARK: - Private Methods
