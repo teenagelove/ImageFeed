@@ -24,6 +24,19 @@ enum Constants {
         static let failedFetchProfileImage = "Failed to fetch profile image"
         static let failedEnter = "Failed to enter the system"
         static let somethingWrong = "Something went wrong"
+        static let taskIsRunning = "Task already is running"
+        static let failedToChangeLike = "Failed to change like"
+        static let failedToFindPhoto = "Failed to find photo"
+        static let failedToLoadImage = "Failed to download image"
+    }
+    
+    enum Alert {
+        static let yes = "Yes"
+        static let cancel = "Cancel"
+        static let ok = "OK"
+        static let retry = "Retry"
+        static let byeMessage = "Bye, bye!"
+        static let sureMessage = "Are you sure?"
     }
 
     enum Images {
@@ -39,6 +52,7 @@ enum Constants {
         static let backButton = "Backward"
         static let sharingButton = "Sharing"
         static let imagesList = "tab_editorial_active"
+        static let unsplashLoader = "unsplash_loader"
     }
 
     enum UI {
@@ -47,7 +61,7 @@ enum Constants {
     }
     
     enum ZoomScale {
-        static let minimum = 0.25
+        static let minimum = 0.05
         static let maximum = 1.25
     }
     
@@ -69,13 +83,20 @@ enum Constants {
         static let tokenPath = "/oauth/token"
         static let mePath = "/me"
         static let usersPath = "/users"
+        static let photosPath = "/photos"
         static let authorizationCodeString = "authorization_code"
         static let authorizationHeader = "Authorization"
         static let bearer = "Bearer "
+        static let pageQuery = "page"
+        static let perPageQuery = "per_page"
+        static let perPageValue = "10"
+        static let post = "POST"
+        static let delete = "DELETE"
     }
     
     enum NetworkError: Error {
         case invalidRequest
+        case invalidData
     }
     
     enum Titles {
@@ -88,5 +109,10 @@ enum Constants {
     
     enum Storage {
         static let accessToken = "accessToken"
+    }
+    
+    enum Notifications {
+        static let profileImageServiceDidChange = "ProfileImageServiceDidChange"
+        static let imagesListServiceDidChange = "ImagesListServiceDidChange"
     }
 }

@@ -6,6 +6,7 @@ final class SplashViewController: UIViewController {
     private let storage = OAuth2TokenStorage.shared
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
+    private let imagesListService = ImagesListService.shared
     
     // MARK: - UI Components
     private lazy var imageView: UIImageView = {
@@ -23,6 +24,7 @@ final class SplashViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         checkToken()
+        UIBlockingProgressHUD.dismiss()
     }
     
     // MARK: - Setup Methods
@@ -74,6 +76,7 @@ private extension SplashViewController {
         }
         
         let tabBarController = TabBarController()
+        imagesListService.fetchPhotosNextPage()
         window.rootViewController = tabBarController
     }
 }

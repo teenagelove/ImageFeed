@@ -6,7 +6,7 @@ final class ProfileImageService {
     static let shared = ProfileImageService()
     
     // MARK: - Notification
-    static let didChangeNotification = Notification.Name("ProfileImageServiceDidChange")
+    static let didChangeNotification = Notification.Name(Constants.Notifications.profileImageServiceDidChange)
     
     // MARK: - Private Properties
     private let urlSession = URLSession.shared
@@ -16,6 +16,10 @@ final class ProfileImageService {
     
     // MARK: - Init
     private init() {}
+    
+    func clearProfileImage() {
+        avatarURL = nil
+    }
     
     func fetchProfileImageURL(username: String, completion: @escaping (Result<String, Error>) -> Void ) {
         assert(Thread.isMainThread)
@@ -50,8 +54,11 @@ final class ProfileImageService {
         self.task = task
         task.resume()
     }
-    
-    private func makeRequest(username: String) -> URLRequest? {
+}
+
+// MARK: - Private Methods
+private extension ProfileImageService {
+    func makeRequest(username: String) -> URLRequest? {
         guard
             var urlComponents = URLComponents(string: Constants.API.baseAPIUrl)
         else {

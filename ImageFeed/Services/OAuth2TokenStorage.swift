@@ -21,4 +21,8 @@ final class OAuth2TokenStorage {
     private let keychain = KeychainWrapper.standard
     
     private init() {}
+    
+    func clearToken() {
+        token = nil
+    }
 }

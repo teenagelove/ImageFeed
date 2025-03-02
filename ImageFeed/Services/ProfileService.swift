@@ -13,6 +13,10 @@ final class ProfileService {
     // MARK: - Init
     private init() {}
     
+    func clearProfile() {
+        profile = nil
+    }
+    
     func fetchProfile(token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
         assert(Thread.isMainThread)
         
@@ -41,8 +45,11 @@ final class ProfileService {
         self.task = task
         task.resume()
     }
-    
-    private func makeRequest(token: String) -> URLRequest? {
+}
+
+// MARK: - Private Methods
+private extension ProfileService {
+    func makeRequest(token: String) -> URLRequest? {
         guard
             var urlComponents = URLComponents(string: Constants.API.baseAPIUrl)
         else {
