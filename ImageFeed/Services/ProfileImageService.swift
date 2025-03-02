@@ -17,8 +17,8 @@ final class ProfileImageService {
     // MARK: - Init
     private init() {}
     
-    static func clearProfileImage() {
-        shared.avatarURL = nil
+    func clearProfileImage() {
+        avatarURL = nil
     }
     
     func fetchProfileImageURL(username: String, completion: @escaping (Result<String, Error>) -> Void ) {

@@ -3,18 +3,19 @@ import WebKit
 
 
 final class ProfileLogoutService {
-    // MARK: - Singletone
+    // MARK: - Singleton
     static let shared = ProfileLogoutService()
     
     // MARK: - Inits
     private init() { }
     
+    // MARK: - Public Methods
     func logout() {
         clearCookies()
-        OAuth2TokenStorage.clearToken()
-        ProfileService.clearProfile()
-        ProfileImageService.clearProfileImage()
-        ImagesListService.clearImagesList()
+        OAuth2TokenStorage.shared.clearToken()
+        ProfileService.shared.clearProfile()
+        ProfileImageService.shared.clearProfileImage()
+        ImagesListService.shared.clearImagesList()
         switchToSplashView()
     }
 }

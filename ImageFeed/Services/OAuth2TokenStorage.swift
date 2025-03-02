@@ -22,7 +22,7 @@ final class OAuth2TokenStorage {
     
     private init() {}
     
-    static func clearToken() {
-        shared.token = nil
+    func clearToken() {
+        token = nil
     }
 }

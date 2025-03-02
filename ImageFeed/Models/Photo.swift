@@ -2,6 +2,8 @@ import Foundation
 
 
 struct Photo {
+    static let dateFormatter = ISO8601DateFormatter()
+    
     let id: String
     let size: CGSize
     let createdAt: Date?
@@ -15,7 +17,7 @@ struct Photo {
         size = CGSize(width: photoResult.width, height: photoResult.height)
         
         if let stringDate = photoResult.createdAt {
-            createdAt = ISO8601DateFormatter().date(from: stringDate)
+            createdAt = Photo.dateFormatter.date(from: stringDate)
         } else {
             createdAt = nil
         }
@@ -36,14 +38,6 @@ struct PhotoResult: Decodable {
     let likedByUser: Bool
     let urls: UrlsResult
     
-    struct UrlsResult: Decodable {
-        let raw: String
-        let full: String
-        let regular: String
-        let small: String
-        let thumb: String
-    }
-    
     private enum CodingKeys: String, CodingKey {
         case id
         case width
@@ -52,5 +46,15 @@ struct PhotoResult: Decodable {
         case description
         case likedByUser = "liked_by_user"
         case urls
+    }
+}
+
+extension PhotoResult {
+    struct UrlsResult: Decodable {
+        let raw: String
+        let full: String
+        let regular: String
+        let small: String
+        let thumb: String
     }
 }

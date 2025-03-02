@@ -17,9 +17,9 @@ final class ImagesListService {
     // MARK: - Init
     private init() {}
     
-    static func clearImagesList() {
-        shared.lastLoadedPage = nil
-        shared.photos = []
+    func clearImagesList() {
+        lastLoadedPage = nil
+        photos = []
     }
     
     func fetchPhotosNextPage() {

@@ -13,8 +13,8 @@ final class ProfileService {
     // MARK: - Init
     private init() {}
     
-    static func clearProfile() {
-        shared.profile = nil
+    func clearProfile() {
+        profile = nil
     }
     
     func fetchProfile(token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
