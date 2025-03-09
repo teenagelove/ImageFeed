@@ -27,7 +27,8 @@ final class AlertPresenter {
         )
     }
     
-    static func showLogoutWarning(vc: UIViewController, handler: @escaping () -> Void) {
+    static func showLogoutWarning(vc: ProfileViewControllerProtocol, handler: @escaping () -> Void) {
+        guard let vc = vc as? UIViewController else { return }
         showAlert(
             vc: vc,
             title: Constants.Alert.byeMessage,
