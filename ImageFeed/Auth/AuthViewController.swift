@@ -80,15 +80,20 @@ private extension AuthViewController {
     
     // MARK: - Actions
     @objc func didTapLoginButton() {
-        let webViewViewController = WebViewViewController()
-        let webViewPresenter = WebViewPresenter()
-        webViewViewController.presenter = webViewPresenter
-        webViewViewController.delegate = self
-        webViewPresenter.view = webViewViewController
+        let webViewViewController = setupWebView()
         navigationController?.pushViewController(webViewViewController, animated: true)
     }
     
     // MARK: - Logic
+    func setupWebView() -> WebViewViewController {
+        let webViewViewController = WebViewViewController()
+        let webViewPresenter = WebViewPresenter(authHelper: AuthHelper())
+        webViewViewController.presenter = webViewPresenter
+        webViewViewController.delegate = self
+        webViewPresenter.view = webViewViewController
+        return webViewViewController
+    }
+    
     func fetchOAuthToken(code: String) {
         UIBlockingProgressHUD.show()
         

@@ -9,30 +9,28 @@ protocol WebViewPresenterProtocol {
 }
 
 final class WebViewPresenter: WebViewPresenterProtocol {
+    // MARK: - Properties
     weak var view: WebViewViewControllerProtocol?
+    var authHelper: AuthHelperProtocol
     
+    // MARK: - Initialize
+    init(authHelper: AuthHelperProtocol) {
+        self.authHelper = authHelper
+    }
+}
+// MARK: - Private Methods
+private extension WebViewPresenter {
+    func shouldHideProgress(for value: Float) -> Bool {
+        abs(value - 1.0) <= 0.0001
+    }
+}
+
+// MARK: - WebViewPresenterProtocol
+extension WebViewPresenter {
     func setupWebView() {
-        guard var urlComponents = URLComponents(string: Constants.API.unsplashAuthorizeURLString) else {
-            print(Constants.Errors.failedURL)
-            return
-        }
-        
-        urlComponents.queryItems = [
-            URLQueryItem(name: "client_id", value: Constants.API.accessKey),
-            URLQueryItem(name: "redirect_uri", value: Constants.API.redirectURI),
-            URLQueryItem(name: "response_type", value: "code"),
-            URLQueryItem(name: "scope", value: Constants.API.accessScope),
-        ]
-        
-        guard let url = urlComponents.url else {
-            print(Constants.Errors.failedURL)
-            return
-        }
-        
-        didUpdateProgressValue(0)
-        
-        let request = URLRequest(url: url)
+        guard let request = authHelper.authRequest() else { return }
         view?.load(request: request)
+        didUpdateProgressValue(0)
     }
     
     func didUpdateProgressValue(_ newValue: Double) {
@@ -44,18 +42,6 @@ final class WebViewPresenter: WebViewPresenterProtocol {
     }
     
     func code(from url: URL) -> String? {
-        guard
-            let urlComponents = URLComponents(string: url.absoluteString),
-            urlComponents.path == Constants.API.oauthPath,
-            let items = urlComponents.queryItems,
-            let codeItem = items.first(where: { $0.name == "code" })
-        else { return nil }
-        return codeItem.value
-    }
-}
-
-private extension WebViewPresenter {
-    func shouldHideProgress(for value: Float) -> Bool {
-        abs(value - 1.0) <= 0.0001
+        authHelper.code(from: url)
     }
 }
