@@ -1,7 +1,7 @@
 import UIKit
 @preconcurrency import WebKit
 
-protocol WebViewViewControllerProtocol: AnyObject {
+public protocol WebViewViewControllerProtocol: AnyObject {
     var presenter: WebViewPresenterProtocol? { get set }
     func load(request: URLRequest)
     func setProgressValue(_ newValue: Float)
@@ -55,7 +55,7 @@ private extension WebViewViewController {
     
     func setupWebView() {
         webView.navigationDelegate = self
-        presenter?.setupWebView()
+        presenter?.viewDidLoad()
     }
     
     func setupObservers() {

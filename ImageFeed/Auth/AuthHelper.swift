@@ -1,7 +1,7 @@
 import Foundation
 
 
-protocol AuthHelperProtocol {
+public protocol AuthHelperProtocol {
     func authRequest() -> URLRequest?
     func authURL() -> URL?
     func code(from url: URL) -> String?
