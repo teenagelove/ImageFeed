@@ -1,10 +1,17 @@
 import UIKit
 @preconcurrency import WebKit
 
+protocol WebViewViewControllerProtocol: AnyObject {
+    var presenter: WebViewPresenterProtocol? { get set }
+    func load(request: URLRequest)
+    func setProgressValue(_ newValue: Float)
+    func setProgressHidden(_ isHidden: Bool)
+}
 
-final class WebViewViewController: UIViewController {
+final class WebViewViewController: UIViewController & WebViewViewControllerProtocol {
     // MARK: - Properties
     weak var delegate: WebViewViewControllerDelegate?
+    var presenter: WebViewPresenterProtocol?
     
     // MARK: -Private Properties
     private var estimatedProgressObservation: NSKeyValueObservation?
@@ -48,31 +55,12 @@ private extension WebViewViewController {
     
     func setupWebView() {
         webView.navigationDelegate = self
-        
-        guard var urlComponents = URLComponents(string: Constants.API.unsplashAuthorizeURLString) else {
-            print(Constants.Errors.failedURL)
-            return
-        }
-        
-        urlComponents.queryItems = [
-            URLQueryItem(name: "client_id", value: Constants.API.accessKey),
-            URLQueryItem(name: "redirect_uri", value: Constants.API.redirectURI),
-            URLQueryItem(name: "response_type", value: "code"),
-            URLQueryItem(name: "scope", value: Constants.API.accessScope),
-        ]
-        
-        guard let url = urlComponents.url else {
-            print(Constants.Errors.failedURL)
-            return
-        }
-        
-        let request = URLRequest(url: url)
-        webView.load(request)
+        presenter?.setupWebView()
     }
     
     func setupObservers() {
-        estimatedProgressObservation = webView.observe(\.estimatedProgress) {[weak self] _,_ in
-            self?.updateProgressView()
+        estimatedProgressObservation = webView.observe(\.estimatedProgress) {[weak self] webView,_ in
+            self?.presenter?.didUpdateProgressValue(webView.estimatedProgress)
         }
     }
     
@@ -86,11 +74,6 @@ private extension WebViewViewController {
             progressView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             progressView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
-    }
-    
-    func updateProgressView() {
-        progressView.progress = Float(webView.estimatedProgress)
-        progressView.isHidden = fabs(webView.estimatedProgress - 1) <= 0.0001
     }
 }
 
@@ -113,15 +96,21 @@ extension WebViewViewController: WKNavigationDelegate {
     }
     
     private func code(from navigationAction: WKNavigationAction) -> String? {
-        guard
-            let url = navigationAction.request.url,
-            let urlComponents = URLComponents(string: url.absoluteString),
-            urlComponents.path == Constants.API.oauthPath,
-            let items = urlComponents.queryItems,
-            let codeItem = items.first(where: { $0.name == "code" })
-        else {
-            return nil
-        }
-        return codeItem.value
+        guard let url = navigationAction.request.url else { return nil }
+        return presenter?.code(from: url)
+    }
+}
+
+// MARK: - WebViewViewControllerProtocol
+extension WebViewViewController {
+    func load(request: URLRequest) {
+        webView.load(request)
+    }
+    func setProgressValue(_ newValue: Float) {
+        progressView.progress = newValue
+    }
+    
+    func setProgressHidden(_ isHidden: Bool) {
+        progressView.isHidden = isHidden
     }
 }

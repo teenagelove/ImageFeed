@@ -81,7 +81,10 @@ private extension AuthViewController {
     // MARK: - Actions
     @objc func didTapLoginButton() {
         let webViewViewController = WebViewViewController()
+        let webViewPresenter = WebViewPresenter()
+        webViewViewController.presenter = webViewPresenter
         webViewViewController.delegate = self
+        webViewPresenter.view = webViewViewController
         navigationController?.pushViewController(webViewViewController, animated: true)
     }
     
