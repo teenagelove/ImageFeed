@@ -1,12 +1,17 @@
 import UIKit
 import Kingfisher
 
-// MARK: - Delegate Protocol
-protocol ImagesListCellDelegate: AnyObject {
-    func imageListCellDidTapLike(_ cell: ImagesListCell)
+protocol ImagesListCellProtocol {
+    func configCell(cellImageURL: URL, isLiked: Bool, dateString: String, completion: (() -> Void)?)
+    func setIsLiked(isLike: Bool)
 }
 
-final class ImagesListCell: UITableViewCell {
+// MARK: - Delegate Protocol
+protocol ImagesListCellDelegate: AnyObject {
+    func imageListCellDidTapLike(_ cell: ImagesListCellProtocol)
+}
+
+final class ImagesListCell: UITableViewCell & ImagesListCellProtocol {
     // MARK: - Public properties
     static let reuseIdentifier = "ImagesListCell"
     

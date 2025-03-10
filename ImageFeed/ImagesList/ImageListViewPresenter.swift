@@ -2,18 +2,19 @@ import Foundation
 
 protocol ImageListViewPresenterProtocol {
     var view: ImagesListViewControllerProtocol? { get set }
+    var photos: [Photo] { get set }
     func updateTableViewAnimated()
     func calculateCellHeight(for indexPath: IndexPath) -> CGFloat
     func numbersOfRowsInSection() -> Int
     func willDisplayCell(at indexPath: IndexPath)
     func configureSingleView(for indexPath: IndexPath) -> SingleImageViewController?
-    func configCell(for cell: ImagesListCell, with indexPath: IndexPath)
-    func didTapLikeButton(_ cell: ImagesListCell, completion: @escaping () -> Void)
+    func configCell(for cell: ImagesListCellProtocol, with indexPath: IndexPath)
+    func didTapLikeButton(_ cell: ImagesListCellProtocol, completion: @escaping () -> Void)
 }
 
 final class ImagesListViewPresenter: ImageListViewPresenterProtocol {
     weak var view: ImagesListViewControllerProtocol?
-    private var photos = [Photo]()
+    var photos: [Photo]
     private let imagesListService: ImagesListServiceProtocol
     private let currentDate = Date()
 
@@ -24,8 +25,11 @@ final class ImagesListViewPresenter: ImageListViewPresenterProtocol {
         return formatter
     }()
     
-    init(imagesListService: ImagesListServiceProtocol = ImagesListService.shared) {
+    init(
+        imagesListService: ImagesListServiceProtocol = ImagesListService.shared
+    ) {
         self.imagesListService = imagesListService
+        self.photos = imagesListService.photos
     }
 }
 
@@ -88,7 +92,7 @@ extension ImagesListViewPresenter {
         return singleImageViewController
     }
 
-    func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
+    func configCell(for cell: ImagesListCellProtocol, with indexPath: IndexPath) {
         let photo = photos[indexPath.row]
         guard
             let imageURL = URL(string: photo.smallImageURL)
@@ -107,8 +111,10 @@ extension ImagesListViewPresenter {
         }
     }
     
-    func didTapLikeButton(_ cell: ImagesListCell, completion: @escaping () -> Void) {
-        guard let indexPath = view?.tableView.indexPath(for: cell) else { return }
+    func didTapLikeButton(_ cell: ImagesListCellProtocol, completion: @escaping () -> Void) {
+        guard
+            let cell = cell as? ImagesListCell,
+            let indexPath = view?.tableView.indexPath(for: cell) else { return }
         let photo = photos[indexPath.row]
         UIBlockingProgressHUD.show()
         imagesListService.changeLike(photoId: photo.id, isLike: !photo.isLiked) { [weak self] result in

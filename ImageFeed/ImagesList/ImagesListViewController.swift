@@ -115,7 +115,7 @@ extension ImagesListViewController: UITableViewDataSource {
 
 // MARK: - ImagesListCellDelegate
 extension ImagesListViewController: ImagesListCellDelegate {
-    func imageListCellDidTapLike(_ cell: ImagesListCell) {
+    func imageListCellDidTapLike(_ cell: ImagesListCellProtocol) {
         presenter?.didTapLikeButton(cell) {
             AlertPresenter.showLikeAlert(vc: self)
         }
