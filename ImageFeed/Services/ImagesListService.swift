@@ -47,7 +47,11 @@ final class ImagesListService: ImagesListServiceProtocol {
             switch result {
             case .success(let response):
                 self.lastLoadedPage = nextPage
-                self.photos.append(contentsOf: response.map(Photo.init))
+                let newPhotos = response.map(Photo.init)
+                let uniquePhotos = newPhotos.filter { newPhoto in
+                    !self.photos.contains { $0.id == newPhoto.id }
+                }
+                self.photos.append(contentsOf: uniquePhotos)
                 NotificationCenter.default.post(
                     name: Self.didChangeNotification,
                     object: self,
