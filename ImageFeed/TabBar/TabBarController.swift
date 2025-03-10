@@ -24,6 +24,11 @@ private extension TabBarController {
     func setupControllers() {
         
         let imagesListViewController = ImagesListViewController()
+        let imagesListPresenter = ImagesListViewPresenter()
+        
+        imagesListViewController.presenter = imagesListPresenter
+        imagesListPresenter.view = imagesListViewController
+        
         imagesListViewController.tabBarItem = UITabBarItem(
             title: "",
             image: UIImage(named: Constants.Images.imagesList),
