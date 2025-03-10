@@ -1,12 +1,12 @@
 import Foundation
 
-public protocol ImageListViewPresenterProtocol {
+protocol ImageListViewPresenterProtocol {
     var view: ImagesListViewControllerProtocol? { get set }
     func updateTableViewAnimated()
     func calculateCellHeight(for indexPath: IndexPath) -> CGFloat
     func numbersOfRowsInSection() -> Int
     func willDisplayCell(at indexPath: IndexPath)
-    func configureSingleView(for indexPath: IndexPath) -> Any?
+    func configureSingleView(for indexPath: IndexPath) -> SingleImageViewController?
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath)
     func didTapLikeButton(_ cell: ImagesListCell, completion: @escaping () -> Void)
 }
@@ -73,7 +73,7 @@ extension ImagesListViewPresenter {
         imagesListService.fetchPhotosNextPage()
     }
 
-    func configureSingleView(for indexPath: IndexPath) -> Any? {
+    func configureSingleView(for indexPath: IndexPath) -> SingleImageViewController? {
         guard
             let imageURL = URL(string: photos[indexPath.row].largeImageURL)
         else {

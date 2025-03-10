@@ -4,7 +4,7 @@ struct ProfileResult: Decodable {
     let bio: String?
 }
 
-public struct Profile {
+struct Profile {
     let username: String
     let name: String
     let loginName: String
@@ -20,7 +20,7 @@ public struct Profile {
 }
 
 // MARK: - Public Inits
-public extension Profile {
+extension Profile {
     init(username: String, name: String, loginName: String, bio: String) {
         self.username = username
         self.name = name

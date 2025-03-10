@@ -1,7 +1,7 @@
 import UIKit
 
 
-public protocol ImagesListViewControllerProtocol: AnyObject {
+protocol ImagesListViewControllerProtocol: AnyObject {
     var presenter: ImageListViewPresenterProtocol? { get set }
     var tableView: UITableView { get set }
 }

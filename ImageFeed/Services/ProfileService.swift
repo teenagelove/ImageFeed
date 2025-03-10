@@ -1,7 +1,7 @@
 import Foundation
 
 
-public protocol ProfileServiceProtocol: AnyObject {
+protocol ProfileServiceProtocol: AnyObject {
     var profile: Profile? { get }
     func fetchProfile(token: String, completion: @escaping (Result<Profile, Error>) -> Void)
     func clearProfile()

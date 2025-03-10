@@ -6,7 +6,7 @@ protocol ImagesListCellDelegate: AnyObject {
     func imageListCellDidTapLike(_ cell: ImagesListCell)
 }
 
-public final class ImagesListCell: UITableViewCell {
+final class ImagesListCell: UITableViewCell {
     // MARK: - Public properties
     static let reuseIdentifier = "ImagesListCell"
     

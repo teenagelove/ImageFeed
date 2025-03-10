@@ -1,4 +1,4 @@
-import ImageFeed
+@testable import ImageFeed
 
 
 final class MockProfileImageService: ProfileImageServiceProtocol {

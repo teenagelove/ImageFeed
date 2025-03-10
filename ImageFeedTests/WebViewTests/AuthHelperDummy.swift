@@ -1,5 +1,5 @@
 import Foundation
-import ImageFeed
+@testable import ImageFeed
 
 final class AuthHelperDummy: AuthHelperProtocol {
     func authRequest() -> URLRequest? {
