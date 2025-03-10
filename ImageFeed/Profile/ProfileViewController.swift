@@ -2,7 +2,7 @@ import UIKit
 import Kingfisher
 
 
-protocol ProfileViewControllerProtocol: AnyObject {
+public protocol ProfileViewControllerProtocol: AnyObject {
     var presenter: ProfileViewPresenterProtocol? { get set }
     func displayProfileData(name: String, login: String, description: String)
     func downloadAvatar(url: URL)
