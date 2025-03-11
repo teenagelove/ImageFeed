@@ -34,6 +34,7 @@ private extension TabBarController {
             image: UIImage(named: Constants.Images.imagesList),
             selectedImage: nil
         )
+        imagesListViewController.tabBarItem.accessibilityIdentifier = Constants.AccessibilityIdentifiers.feed
         
         let profileViewController = ProfileViewController()
         let profilePresenter = ProfileViewPresenter()
@@ -46,6 +47,7 @@ private extension TabBarController {
             image: UIImage(named: Constants.Images.activeProfile),
             selectedImage: nil
         )
+        profileViewController.tabBarItem.accessibilityIdentifier = Constants.AccessibilityIdentifiers.profile
         
         viewControllers = [imagesListViewController, profileViewController]
     }

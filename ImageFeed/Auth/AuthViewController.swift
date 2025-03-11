@@ -24,6 +24,7 @@ final class AuthViewController: UIViewController {
         button.titleLabel?.font = Constants.Fonts.loginButton
         button.titleLabel?.textAlignment = .center
         button.addTarget(self, action: #selector(didTapLoginButton), for: .touchUpInside)
+        button.accessibilityIdentifier = Constants.AccessibilityIdentifiers.loginButton
         return button
     }()
     
