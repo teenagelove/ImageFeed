@@ -122,5 +122,7 @@ enum Constants {
         static let feed = "Feed"
         static let profile = "Profile"
         static let logoutButton = "Logout"
+        static let likeButton = "LikeButton"
+        static let singleBackButton = "SingleBackButton"
     }
 }

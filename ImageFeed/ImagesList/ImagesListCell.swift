@@ -33,6 +33,7 @@ final class ImagesListCell: UITableViewCell & ImagesListCellProtocol {
         button.setImage(UIImage(named: Constants.Images.noActiveLike), for: .normal)
         button.addTarget(self, action: #selector(didTapLikeButton), for: .touchUpInside)
         button.setImage(UIImage(named: Constants.Images.noActiveLike), for: .normal)
+        button.accessibilityIdentifier = Constants.AccessibilityIdentifiers.likeButton
         return button
     }()
     

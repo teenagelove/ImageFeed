@@ -73,6 +73,10 @@ extension ImagesListViewPresenter {
         if indexPath.row == 0 {
             UIBlockingProgressHUD.dismiss()
         }
+        
+        let testMode = ProcessInfo.processInfo.arguments.contains("TestMode")
+        if testMode { return }
+        
         guard indexPath.row == photos.count - 1 else { return }
         imagesListService.fetchPhotosNextPage()
     }
