@@ -66,7 +66,7 @@ extension ImagesListViewPresenter {
     }
 
     func numbersOfRowsInSection() -> Int {
-        return photos.count
+        photos.count
     }
 
     func willDisplayCell(at indexPath: IndexPath) {
@@ -74,8 +74,7 @@ extension ImagesListViewPresenter {
             UIBlockingProgressHUD.dismiss()
         }
         
-        let testMode = ProcessInfo.processInfo.arguments.contains("TestMode")
-        if testMode { return }
+        guard !ProcessInfo.processInfo.arguments.contains("TestMode") else { return }
         
         guard indexPath.row == photos.count - 1 else { return }
         imagesListService.fetchPhotosNextPage()

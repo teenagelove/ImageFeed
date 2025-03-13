@@ -28,7 +28,7 @@ extension WebViewPresenter {
 // MARK: - WebViewPresenterProtocol
 extension WebViewPresenter {
     func viewDidLoad() {
-        guard let request = authHelper.authRequest() else { return }
+        guard let request = authHelper.authURLRequest else { return }
         view?.load(request: request)
         didUpdateProgressValue(0)
     }
@@ -42,6 +42,6 @@ extension WebViewPresenter {
     }
     
     func code(from url: URL) -> String? {
-        authHelper.code(from: url)
+        authHelper.getCode(from: url)
     }
 }

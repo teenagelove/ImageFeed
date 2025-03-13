@@ -38,7 +38,7 @@ final class WebViewTests: XCTestCase {
         let configuration = AuthConfiguration.standard
         let authHelper = AuthHelper(configuration: configuration)
 
-        let url = authHelper.authURL()
+        let url = authHelper.getAuthURL()
         
         guard let urlString = url?.absoluteString else {
             return XCTFail("Auth URL is nil")
@@ -65,7 +65,7 @@ final class WebViewTests: XCTestCase {
             return XCTFail("Failed to create URL")
         }
         
-        let code = authHelper.code(from: url)
+        let code = authHelper.getCode(from: url)
         
         XCTAssertEqual(testCode, code)
     }

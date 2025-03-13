@@ -2,13 +2,13 @@ import Foundation
 
 
 protocol AuthHelperProtocol {
-    func authRequest() -> URLRequest?
-    func authURL() -> URL?
-    func code(from url: URL) -> String?
+    var authURLRequest: URLRequest? { get }
+    func getAuthURL() -> URL?
+    func getCode(from url: URL) -> String?
 }
 
 final class AuthHelper {
-    let configuration: AuthConfiguration
+    private let configuration: AuthConfiguration
     
     init(configuration: AuthConfiguration = .standard) {
         self.configuration = configuration
@@ -18,12 +18,12 @@ final class AuthHelper {
 
 // MARK: - AuthHelperProtocol
 extension AuthHelper: AuthHelperProtocol {
-    func authRequest() -> URLRequest? {
-        guard let url = authURL() else { return nil }
-        return URLRequest(url: url)
+    var authURLRequest: URLRequest? {
+       guard let url = getAuthURL() else { return nil }
+       return URLRequest(url: url)
     }
     
-    func authURL() -> URL? {
+    func getAuthURL() -> URL? {
         guard var urlComponents = URLComponents(string: configuration.authURLString) else {
             print(Constants.Errors.failedURL)
             return nil
@@ -39,7 +39,7 @@ extension AuthHelper: AuthHelperProtocol {
         return urlComponents.url
     }
     
-    func code(from url: URL) -> String? {
+    func getCode(from url: URL) -> String? {
         guard
             let urlComponents = URLComponents(string: url.absoluteString),
             urlComponents.path == configuration.oauthPath,

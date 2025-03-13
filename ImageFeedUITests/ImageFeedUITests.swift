@@ -1,4 +1,6 @@
 import XCTest
+@testable import ImageFeed
+
 
 enum Credentials {
     // Enter your data here
@@ -20,9 +22,9 @@ final class ImageFeedUITests: XCTestCase {
     func testAuth() throws {
         logoutIfSessionExists()
 
-        app.buttons["Authenticate"].tap()
+        app.buttons[Constants.AccessibilityIdentifiers.loginButton].tap()
 
-        let webView = app.webViews["UnsplashWebView"]
+        let webView = app.webViews[Constants.AccessibilityIdentifiers.webView]
         XCTAssertTrue(webView.waitForExistence(timeout: 10))
 
         let loginTextField = webView.descendants(matching: .textField).element
@@ -55,12 +57,12 @@ final class ImageFeedUITests: XCTestCase {
             boundBy: 4)
         XCTAssertTrue(cellToLike.waitForExistence(timeout: 10))
 
-        cellToLike.buttons["LikeButton"].tap()
+        cellToLike.buttons[Constants.AccessibilityIdentifiers.likeButton].tap()
 
         let progressHUD = app.activityIndicators.progressIndicators.element
         XCTAssertFalse(progressHUD.waitForExistence(timeout: 5))
 
-        cellToLike.buttons["LikeButton"].tap()
+        cellToLike.buttons[Constants.AccessibilityIdentifiers.likeButton].tap()
         XCTAssertFalse(progressHUD.waitForExistence(timeout: 5))
         
         cellToLike.tap()
@@ -71,26 +73,26 @@ final class ImageFeedUITests: XCTestCase {
         image.pinch(withScale: 3, velocity: 1)
         image.pinch(withScale: 0.5, velocity: -1)
 
-        let backButton = app.buttons["SingleBackButton"]
+        let backButton = app.buttons[Constants.AccessibilityIdentifiers.singleBackButton]
         XCTAssertTrue(backButton.waitForExistence(timeout: 10))
         backButton.tap()
     }
 
     func testProfile() throws {
-        app.tabBars.buttons["Profile"].tap()
+        app.tabBars.buttons[Constants.AccessibilityIdentifiers.profile].tap()
         
         XCTAssertTrue(app.staticTexts[Credentials.name].exists)
         XCTAssertTrue(app.staticTexts[Credentials.loginName].exists)
         
         logout()
-        XCTAssertTrue(app.buttons["Authenticate"].exists)
+        XCTAssertTrue(app.buttons[Constants.AccessibilityIdentifiers.loginButton].exists)
     }
 }
 
 extension ImageFeedUITests {
     fileprivate func logoutIfSessionExists() {
-        if !app.buttons["Authenticate"].exists {
-            app.tabBars.buttons["Profile"].tap()
+        if !app.buttons[Constants.AccessibilityIdentifiers.loginButton].exists {
+            app.tabBars.buttons[Constants.AccessibilityIdentifiers.profile].tap()
             logout()
         }
     }
@@ -102,7 +104,7 @@ extension ImageFeedUITests {
     }
     
     fileprivate func logout() {
-        app.buttons["Logout"].tap()
+        app.buttons[Constants.AccessibilityIdentifiers.logoutButton].tap()
         let alert = app.alerts["Bye, bye!"]
         XCTAssertTrue(alert.waitForExistence(timeout: 5))
         alert.scrollViews.otherElements.buttons["Yes"].tap()

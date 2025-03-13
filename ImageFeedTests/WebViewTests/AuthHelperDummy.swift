@@ -11,5 +11,5 @@ final class AuthHelperDummy: AuthHelperProtocol {
 
     func authURL() -> URL? { return nil }
 
-    func code(from url: URL) -> String? { return nil }
+    func getCode(from url: URL) -> String? { return nil }
 }
