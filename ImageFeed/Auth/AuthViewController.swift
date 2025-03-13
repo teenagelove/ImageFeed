@@ -24,6 +24,7 @@ final class AuthViewController: UIViewController {
         button.titleLabel?.font = Constants.Fonts.loginButton
         button.titleLabel?.textAlignment = .center
         button.addTarget(self, action: #selector(didTapLoginButton), for: .touchUpInside)
+        button.accessibilityIdentifier = Constants.AccessibilityIdentifiers.loginButton
         return button
     }()
     
@@ -80,12 +81,20 @@ private extension AuthViewController {
     
     // MARK: - Actions
     @objc func didTapLoginButton() {
-        let webViewViewController = WebViewViewController()
-        webViewViewController.delegate = self
+        let webViewViewController = setupWebView()
         navigationController?.pushViewController(webViewViewController, animated: true)
     }
     
     // MARK: - Logic
+    func setupWebView() -> WebViewViewController {
+        let webViewViewController = WebViewViewController()
+        let webViewPresenter = WebViewPresenter(authHelper: AuthHelper())
+        webViewViewController.presenter = webViewPresenter
+        webViewViewController.delegate = self
+        webViewPresenter.view = webViewViewController
+        return webViewViewController
+    }
+    
     func fetchOAuthToken(code: String) {
         UIBlockingProgressHUD.show()
         

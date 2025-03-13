@@ -24,18 +24,30 @@ private extension TabBarController {
     func setupControllers() {
         
         let imagesListViewController = ImagesListViewController()
+        let imagesListPresenter = ImagesListViewPresenter()
+        
+        imagesListViewController.presenter = imagesListPresenter
+        imagesListPresenter.view = imagesListViewController
+        
         imagesListViewController.tabBarItem = UITabBarItem(
             title: "",
             image: UIImage(named: Constants.Images.imagesList),
             selectedImage: nil
         )
+        imagesListViewController.tabBarItem.accessibilityIdentifier = Constants.AccessibilityIdentifiers.feed
         
         let profileViewController = ProfileViewController()
+        let profilePresenter = ProfileViewPresenter()
+        
+        profileViewController.presenter = profilePresenter
+        profilePresenter.view = profileViewController
+        
         profileViewController.tabBarItem = UITabBarItem(
             title: "",
             image: UIImage(named: Constants.Images.activeProfile),
             selectedImage: nil
         )
+        profileViewController.tabBarItem.accessibilityIdentifier = Constants.AccessibilityIdentifiers.profile
         
         viewControllers = [imagesListViewController, profileViewController]
     }

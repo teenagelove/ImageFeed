@@ -58,3 +58,15 @@ extension PhotoResult {
         let thumb: String
     }
 }
+
+extension Photo {
+    init(id: String, size: CGSize, createdAt: Date?, welcomeDescription: String?, smallImageURL: String, largeImageURL: String, isLiked: Bool) {
+        self.id = id
+        self.size = size
+        self.createdAt = createdAt
+        self.welcomeDescription = welcomeDescription
+        self.smallImageURL = smallImageURL
+        self.largeImageURL = largeImageURL
+        self.isLiked = isLiked
+    }
+}

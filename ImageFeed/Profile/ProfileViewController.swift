@@ -2,7 +2,15 @@ import UIKit
 import Kingfisher
 
 
-final class ProfileViewController: UIViewController {
+protocol ProfileViewControllerProtocol: AnyObject {
+    var presenter: ProfileViewPresenterProtocol? { get set }
+    func displayProfileData(name: String, login: String, description: String)
+    func downloadAvatar(url: URL)
+}
+
+final class ProfileViewController: UIViewController & ProfileViewControllerProtocol {
+    // MARK: - Public Properties
+    var presenter: ProfileViewPresenterProtocol?
     // MARK: - Private Properties
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
@@ -19,6 +27,7 @@ final class ProfileViewController: UIViewController {
         let button = UIButton()
         button.setImage(UIImage(named: Constants.Images.exitProfile), for: .normal)
         button.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
+        button.accessibilityIdentifier = Constants.AccessibilityIdentifiers.logoutButton
         return button
     }()
     
@@ -48,10 +57,27 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        updateProfileDetails()
         setupConstraints()
         setupObservers()
-        updateAvatar()
+    }
+}
+
+// MARK: - Public Methods
+extension ProfileViewController {
+    func displayProfileData(name: String, login: String, description: String) {
+        nameLabel.text = name
+        loginNameLabel.text = login
+        descriptionLabel.text = description
+    }
+    
+    func downloadAvatar(url: URL) {
+        guard
+            let stubProfile = UIImage(named: Constants.Images.stubProfile)
+        else { return }
+        
+        let processor = RoundCornerImageProcessor(cornerRadius: 61)
+        avatarImageView.kf.indicatorType = .activity
+        avatarImageView.kf.setImage(with: url, placeholder: stubProfile, options: [.processor(processor)])
     }
 }
 
@@ -67,6 +93,7 @@ private extension ProfileViewController {
     
     func setupMainView() {
         view.backgroundColor = .ypBlack
+        presenter?.viewDidLoad()
     }
     
     func setupObservers() {
@@ -75,32 +102,8 @@ private extension ProfileViewController {
             object: nil,
             queue: .main
         ) { [weak self] _ in
-            self?.updateAvatar()
+            self?.presenter?.updateAvatar()
         }
-    }
-    
-    // MARK: - Update Methods
-    func updateProfileDetails() {
-        guard let profile = profileService.profile else {
-            print(Constants.Errors.failedFetchProfile)
-            return
-        }
-        
-        nameLabel.text = profile.name
-        loginNameLabel.text = profile.loginName
-        descriptionLabel.text = profile.bio
-    }
-    
-    func updateAvatar() {
-        guard
-            let profileImageURL = profileImageService.avatarURL,
-            let stubProfile = UIImage(named: Constants.Images.stubProfile),
-            let url = URL(string: profileImageURL)
-        else { return }
-        
-        let processor = RoundCornerImageProcessor(cornerRadius: 61)
-        avatarImageView.kf.indicatorType = .activity
-        avatarImageView.kf.setImage(with: url, placeholder: stubProfile, options: [.processor(processor)])
     }
     
     // MARK: - Layout
@@ -128,9 +131,6 @@ private extension ProfileViewController {
     
     // MARK: - Actions
     @objc func didTapBackButton() {
-        AlertPresenter.showLogoutWarning(vc: self) {
-            UIBlockingProgressHUD.show()
-            ProfileLogoutService.shared.logout()
-        }
+        presenter?.logout()
     }
 }

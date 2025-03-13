@@ -115,4 +115,14 @@ enum Constants {
         static let profileImageServiceDidChange = "ProfileImageServiceDidChange"
         static let imagesListServiceDidChange = "ImagesListServiceDidChange"
     }
+    
+    enum AccessibilityIdentifiers {
+        static let loginButton = "Authenticate"
+        static let webView = "UnsplashWebView"
+        static let feed = "Feed"
+        static let profile = "Profile"
+        static let logoutButton = "Logout"
+        static let likeButton = "LikeButton"
+        static let singleBackButton = "SingleBackButton"
+    }
 }

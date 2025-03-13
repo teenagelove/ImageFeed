@@ -1,12 +1,17 @@
 import UIKit
 import Kingfisher
 
-// MARK: - Delegate Protocol
-protocol ImagesListCellDelegate: AnyObject {
-    func imageListCellDidTapLike(_ cell: ImagesListCell)
+protocol ImagesListCellProtocol {
+    func configCell(cellImageURL: URL, isLiked: Bool, dateString: String, completion: (() -> Void)?)
+    func setIsLiked(isLike: Bool)
 }
 
-final class ImagesListCell: UITableViewCell {
+// MARK: - Delegate Protocol
+protocol ImagesListCellDelegate: AnyObject {
+    func imageListCellDidTapLike(_ cell: ImagesListCellProtocol)
+}
+
+final class ImagesListCell: UITableViewCell & ImagesListCellProtocol {
     // MARK: - Public properties
     static let reuseIdentifier = "ImagesListCell"
     
@@ -28,6 +33,7 @@ final class ImagesListCell: UITableViewCell {
         button.setImage(UIImage(named: Constants.Images.noActiveLike), for: .normal)
         button.addTarget(self, action: #selector(didTapLikeButton), for: .touchUpInside)
         button.setImage(UIImage(named: Constants.Images.noActiveLike), for: .normal)
+        button.accessibilityIdentifier = Constants.AccessibilityIdentifiers.likeButton
         return button
     }()
     
@@ -49,7 +55,7 @@ final class ImagesListCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func prepareForReuse() {
+    public override func prepareForReuse() {
         super.prepareForReuse()
         cellImage.kf.cancelDownloadTask()
     }
