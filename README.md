@@ -1,9 +1,24 @@
 # Image Feed
 
+Image Feed is a mobile app for iPhone (iOS 13+) that lets users enjoy an endless stream of images from Unsplash. After logging in via Unsplash OAuth, you can browse, like, and share stunning photos. The app offers a user-friendly interface with a feed, full-screen image view, and a personal profile. Simple, stylish, and intuitive — perfect for visual content enthusiasts.
+
 # Links
 
 - [Design in Figma](https://clck.ru/38ddGT)
 - [Unsplash API](https://unsplash.com/documentation)
+
+## Screenshots
+
+<p align="center">
+    <img src="Images/Feed.png" width=50%/>
+    <img src="Imges/Single.png" width=50%/>
+</p>
+
+<p align="left">
+    <img src="Images/Auth.png" width=30%/>
+    <img src="Imges/AuthWebView.png" width=30%/>
+   <img src="Imges/Profile.png" width=30%/>
+</p>
 
 # Purpose and Goals of the Application
 
