@@ -7,18 +7,16 @@ Image Feed is a mobile app for iPhone (iOS 13+) that lets users enjoy an endless
 - [Design in Figma](https://clck.ru/38ddGT)
 - [Unsplash API](https://unsplash.com/documentation)
 
-## Screenshots
+# Screenshots
 
-<p align="center">
-    <img src="Images/Feed.png" width=50%/>
-    <img src="Images/Single.png" width=50%/>
-</p>
+| Feed                      | Detail                   |
+|---------------------------|--------------------------|
+| <img src="Images/Feed.png"/>| <img src="Images/Single.png"/> |
 
-<p align="left">
-    <img src="Images/Auth.png" width=30%/>
-    <img src="Images/AuthWebView.png" width=30%/>
-   <img src="Images/Profile.png" width=30%/>
-</p>
+| Authorization             | WebView                  |
+|---------------------------|--------------------------|
+| <img src="Images/Auth.png"/>| <img src="Images/AuthWebView.png"/> | 
+
 
 # Purpose and Goals of the Application
 
