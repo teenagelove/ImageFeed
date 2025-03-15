@@ -11,13 +11,13 @@ Image Feed is a mobile app for iPhone (iOS 13+) that lets users enjoy an endless
 
 <p align="center">
     <img src="Images/Feed.png" width=50%/>
-    <img src="Imges/Single.png" width=50%/>
+    <img src="Images/Single.png" width=50%/>
 </p>
 
 <p align="left">
     <img src="Images/Auth.png" width=30%/>
-    <img src="Imges/AuthWebView.png" width=30%/>
-   <img src="Imges/Profile.png" width=30%/>
+    <img src="Images/AuthWebView.png" width=30%/>
+   <img src="Images/Profile.png" width=30%/>
 </p>
 
 # Purpose and Goals of the Application
