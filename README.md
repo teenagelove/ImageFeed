@@ -27,7 +27,6 @@ Image Feed is a mobile app for iPhone (iOS 13+) that lets users enjoy an endless
 ---
 
 ## 🔗 Links
-- [🎨 Design in Figma](https://clck.ru/38ddGT)  
 - [📷 Unsplash API](https://unsplash.com/documentation)
 
 ---
